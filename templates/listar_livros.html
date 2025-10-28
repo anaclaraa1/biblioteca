@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Livros
+{% endblock %}
+
+{% block title_page %}
+    Livros
+{% endblock %}
+
+{% block content %}
+    {% if livros %}
+        {% for livro in livros %}
+            <div class="livros"></div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

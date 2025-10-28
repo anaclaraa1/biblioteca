@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Cadastro
+{% endblock %}
+
+{% block title_page %}
+    Cadastro
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" placeholder="nome">
+        <label for="email">Email:</label>
+        <input type="email" name="email" placeholder="email">
+        <label for="tel">Telefone:</label>
+        <input type="tel" name="tel" placeholder="telefone">
+        <button>Enviar</button>
+    </form>
+{% endblock %}
