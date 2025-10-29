@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Editoras
+{% endblock %}
+
+{% block title_page %}
+    Editoras
+{% endblock %}
+
+{% block content %}
+    <button><a href="">Adicionar editora</a></button>
+    {% if editoras %}
+        {% for editora in editoras %}
+            <div class="editoras">
+                <!-- informações -->
+                <a href="">Editar</a>
+                <a href="">Excluir</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

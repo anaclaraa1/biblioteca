@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar Emprestimo
+{% endblock %}
+
+{% block title_page %}
+    Editar Emprestimo
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        <label for="data_emprestimo">Data do empréstimo:</label>
+        <input type="date" name="data_emprestimo" placeholder="empréstimo">
+        <label for="data_devolucao">Data da devolução:</label>
+        <input type="date" name="data_devolucao" placeholder="devolução">
+        <label for="data_devolucao_real">Data da devolução real:</label>
+        <input type="date" name="data_devolucao_real" placeholder="devolução real">
+        <label for="status">Status:</label>
+        <select name="status">
+            <option value="pendente">Pendente</option>
+            <option value="devolvido">Devolvido</option>
+            <option value="atrasado">Atrasado</option>
+        </select>
+        <button>Enviar</button>
+    </form>
+{% endblock %}

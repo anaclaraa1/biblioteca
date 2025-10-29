@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Autores
+{% endblock %}
+
+{% block title_page %}
+    Autores
+{% endblock %}
+
+{% block content %}
+    <button><a href="">Adicionar autor</a></button>
+    {% if autores %}
+        {% for autor in autores %}
+            <div class="autores">
+                <!-- informações -->
+                <a href="">Editar</a>
+                <a href="">Excluir</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

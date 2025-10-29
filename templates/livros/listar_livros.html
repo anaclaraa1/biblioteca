@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Livros
+{% endblock %}
+
+{% block title_page %}
+    Livros
+{% endblock %}
+
+{% block content %}
+    <button><a href="">Adicionar livro</a></button>
+    {% if livros %}
+        {% for livro in livros %}
+            <div class="livros">
+                <!-- informações -->
+                <a href="">Editar</a>
+                <a href="">Excluir</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

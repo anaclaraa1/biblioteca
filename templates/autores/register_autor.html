@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Registrar Autor
+{% endblock %}
+
+{% block title_page %}
+    Registrar Autor
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" placeholder="nome">
+        <label for="nacionalidade">Nacionalidade:</label>
+        <input type="text" name="nacionalidade" placeholder="nacionalidade">
+        <label for="nascimento">Nascimento:</label>
+        <input type="date" name="nascimento" placeholder="nascimento">
+        <label for="biografia">Biografia:</label>
+        <textarea name="biografia" placeholder="Escreva algo..."></textarea>
+        <button>Enviar</button>
+    </form>
+{% endblock %}

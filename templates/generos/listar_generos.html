@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Gêneros
+{% endblock %}
+
+{% block title_page %}
+    Gêneros
+{% endblock %}
+
+{% block content %}
+    <button><a href="">Adicionar gênero</a></button>
+    {% if generos %}
+        {% for genero in generos %}
+            <div class="generos">
+                <!-- informações -->
+                <a href="">Editar</a>
+                <a href="">Excluir</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

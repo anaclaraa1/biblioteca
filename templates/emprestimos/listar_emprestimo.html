@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Emprestimos
+{% endblock %}
+
+{% block title_page %}
+    Emprestimos
+{% endblock %}
+
+{% block content %}
+    {% if emprestimos %}
+        {% for emprestimo in emprestimos %}
+            <div class="emprestimos">
+                <!-- informações -->
+                 <a href="">Editar</a>
+                 <a href="">Excluir</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
