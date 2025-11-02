@@ -9,15 +9,15 @@
 {% endblock %}
 
 {% block content %}
-    <form action="" method="post">
-        <label for="nome">Nome:</label>
-        <input type="text" name="nome" placeholder="nome">
-        <label for="nacionalidade">Nacionalidade:</label>
-        <input type="text" name="nacionalidade" placeholder="nacionalidade">
-        <label for="nascimento">Nascimento:</label>
-        <input type="date" name="nascimento" placeholder="nascimento">
-        <label for="biografia">Biografia:</label>
-        <textarea name="biografia" placeholder="Escreva algo..."></textarea>
+    <form action="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}" method="post">
+        <label for="Nome_autor">Nome:</label>
+        <input type="text" name="Nome_autor" placeholder="nome" value="{{ autor.Nome_autor }}">
+        <label for="Nacionalidade">Nacionalidade:</label>
+        <input type="text" name="Nacionalidade" placeholder="nacionalidade" value="{{ autor.Nacionalidade }}">
+        <label for="Data_nascimento">Nascimento:</label>
+        <input type="date" name="Data_nascimento" placeholder="nascimento" value="{{ autor.Data_nascimento }}">
+        <label for="Biografia">Biografia:</label>
+        <textarea name="Biografia" placeholder="Escreva algo..." value="{{ autor.Biografia }}"></textarea>
         <button>Enviar</button>
     </form>
 {% endblock %}

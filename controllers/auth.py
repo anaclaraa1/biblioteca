@@ -1,12 +1,13 @@
-from flask import render_template, url_for, request,redirect, Blueprint
+from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy.orm import Session
-from werkzeug.security import generate_password_hash, check_password_hash
 from database import engine
 from flask_login import login_user, login_required, logout_user
 from database.models import Usuarios
 from datetime import date
+
+
 auth_bp = Blueprint('auth_bp', __name__, template_folder='../templates')
-# bp = Blueprint('users', __name__)
+
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -26,6 +27,7 @@ def register():
             #f
     return render_template('user/register.html')
 
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -37,6 +39,7 @@ def login():
             return redirect(url_for('index'))
         #f
     return render_template('user/login.html')
+
 
 @auth_bp.route('/logout')
 @login_required

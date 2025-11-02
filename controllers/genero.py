@@ -1,10 +1,15 @@
 from flask import render_template, url_for, request,redirect, Blueprint, flash
+from flask_login import login_required
 from sqlalchemy.orm import Session
 from sqlalchemy import  text
 from database import engine
+
+
 genero = Blueprint('genero', __name__, template_folder='../templates')
 
+
 @genero.route('/register_generos', methods=['GET', 'POST'])
+@login_required
 def register_generos():
     if request.method == 'POST':
         nome_genero = request.form.get('nome_genero')

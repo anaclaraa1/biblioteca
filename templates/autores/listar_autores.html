@@ -9,13 +9,17 @@
 {% endblock %}
 
 {% block content %}
-    <button><a href="">Adicionar autor</a></button>
+    {% include 'components/messages.html' %}
+    <button><a href="{{ url_for('autor.register_autores') }}">Adicionar autor</a></button>
     {% if autores %}
         {% for autor in autores %}
             <div class="autores">
-                <!-- informações -->
-                <a href="">Editar</a>
-                <a href="">Excluir</a>
+                <span>{{ autor[1] }}</span>
+                <span>{{ autor[2] }}</span>
+                <span>{{ autor[3] }}</span>
+                <span>{{ autor[4] }}</span>
+                <button><a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">Editar</a></button>
+                <button><a href="">Excluir</a></button>
             </div>
         {% endfor %}
     {% endif %}

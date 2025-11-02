@@ -9,13 +9,15 @@
 {% endblock %}
 
 {% block content %}
-    <button><a href="">Adicionar editora</a></button>
+    {% include 'components/messages.html' %}
+    <button><a href="{{ url_for('editora.register_editoras') }}">Adicionar editora</a></button>
     {% if editoras %}
         {% for editora in editoras %}
             <div class="editoras">
-                <!-- informações -->
-                <a href="">Editar</a>
-                <a href="">Excluir</a>
+                <span>{{ editora[1] }}</span>
+                <span>{{ editora[2] }}</span>
+                <button><a href="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}">Editar</a></button>
+                <button><a href="">Excluir</a></button>
             </div>
         {% endfor %}
     {% endif %}
