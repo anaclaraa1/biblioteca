@@ -1,4 +1,4 @@
-from flask import render_template, url_for, request,redirect, Blueprint
+from flask import render_template, url_for, request,redirect, Blueprint, flash
 from sqlalchemy.orm import Session
 from sqlalchemy import  text
 from database import engine
@@ -35,8 +35,8 @@ def register_livros():
                     }
             )
             db.commit()
-        #f
-        return redirect(url_for('index'))
+            flash('Livro cadastrada com sucesso!', category='success')
+            return redirect(url_for('index'))
     with Session(bind=engine) as db:
         lista_autores = db.execute(text("SELECT * FROM Autores"))
         lista_generos = db.execute(text("SELECT * FROM Generos"))

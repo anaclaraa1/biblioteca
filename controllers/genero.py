@@ -1,4 +1,4 @@
-from flask import render_template, url_for, request,redirect, Blueprint
+from flask import render_template, url_for, request,redirect, Blueprint, flash
 from sqlalchemy.orm import Session
 from sqlalchemy import  text
 from database import engine
@@ -24,7 +24,7 @@ def register_generos():
                         }
                 )
                 db.commit()
-                # f
+                flash('Gênero cadastrada com sucesso!', category='success')
                 return redirect(url_for('index'))
-            # f
+            flash('Este gênero já está cadastrado no sistema.!', category='error')
     return render_template('generos/register_genero.html')
