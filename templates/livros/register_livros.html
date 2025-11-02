@@ -16,17 +16,24 @@
         <input type="text" name="ISBN" placeholder="ISBN">
         <label for="autor">Autor:</label>
         <select name="autor">
+            {% for autor in lista_autores %}  
+                <option value="{{autor.ID_autor}}">{{autor.Nome_autor}}</option>
+            {% endfor %}
             <!-- <option value=""></option> -->
         </select>
         <label for="ano">Ano de publicação:</label>
         <input type="num" name="ano" placeholder="ano">
         <label for="genero">Gênero:</label>
         <select name="genero">
-            <!-- <option value=""></option> -->
+            {% for genero in lista_generos %}  
+                <option value="{{genero.ID_genero}}">{{genero.Nome_genero}}</option>
+            {% endfor %}
         </select>
         <label for="editora">Editora:</label>
         <select name="editora">
-            <!-- <option value=""></option> -->
+            {% for editora in lista_editoras %}  
+                <option value="{{editora.ID_editora}}">{{editora.Nome_editora}}</option>
+            {% endfor %}
         </select>
         <label for="qnt_disponivel">Quantidade disponível:</label>
         <input type="number" name="qnt_disponivel" placeholder="quantidade">
