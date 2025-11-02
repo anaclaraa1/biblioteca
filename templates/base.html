@@ -23,7 +23,8 @@
                 <li><a href="{{ url_for('auth_bp.login') }}">Login</a></li>
                 <li><a href="{{ url_for('livro.register_livros') }}">Livros</a></li>
                 <li><a href="{{ url_for('genero.register_generos') }}">Gênero</a></li>
-                <li><a href="">Autores</a></li>
+                <li><a href="{{ url_for('editora.register_editoras') }}">Editora</a></li>
+                <li><a href="{{ url_for('autor.register_autoress') }}">Autores</a></li>
                 <li><a href="">Emprestimos</a></li>
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('auth_bp.logout') }}">Logout</a></li>

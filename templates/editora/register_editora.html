@@ -9,7 +9,8 @@
 {% endblock %}
 
 {% block content %}
-    <form action="" method="post">
+    {% include 'components/messages.html'   %}
+    <form action="{{ url_for('editora.register_editoras') }}" method="post">
         <label for="nome_editora">Nome da editora:</label>
         <input type="text" name="nome_editora" placeholder="nome da editora">
         <label for="endereco">Endereço:</label>
