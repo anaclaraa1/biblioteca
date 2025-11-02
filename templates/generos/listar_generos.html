@@ -9,13 +9,13 @@
 {% endblock %}
 
 {% block content %}
-    <button><a href="">Adicionar gênero</a></button>
+    <button><a href="{{ url_for('genero.register_generos') }}">Adicionar gênero</a></button>
     {% if generos %}
         {% for genero in generos %}
             <div class="generos">
-                <!-- informações -->
-                <a href="">Editar</a>
-                <a href="">Excluir</a>
+                <span>{{ genero[1] }}</span>
+                <button><a href="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}">Editar</a></button>
+                <button><a href="">Excluir</a></button>
             </div>
         {% endfor %}
     {% endif %}

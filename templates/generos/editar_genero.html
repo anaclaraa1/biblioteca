@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block content %}
-    <form action="" method="post">
-        <label for="nome_genero">Gênero:</label>
-        <input type="text" name="nome_genero" placeholder="nome do gênero">
+    <form action="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}" method="post">
+        <label for="Nome_genero">Gênero:</label>
+        <input type="text" name="Nome_genero" placeholder="nome do gênero" value="{{ genero.Nome_genero }}">
         <button>Enviar</button>
     </form>
 {% endblock %}

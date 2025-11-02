@@ -33,3 +33,36 @@ def register_generos():
                 return redirect(url_for('index'))
             flash('Este gênero já está cadastrado no sistema.!', category='error')
     return render_template('generos/register_genero.html')
+
+
+@genero.route('/generos')
+@login_required
+def generos():
+    with engine.begin() as conn:
+        data = conn.execute(text('SELECT * FROM generos'))
+        generos = data.all()
+    return render_template('generos/listar_generos.html', generos=generos)
+
+
+@genero.route('/editar_genero/<int:genero_id>', methods=['GET', 'POST'])
+@login_required
+def editar_genero(genero_id: int):
+    if request.method == 'POST':
+        with engine.begin() as conn:
+            conn.execute(
+                text(
+                    '''
+                        UPDATE generos
+                        SET Nome_genero = :Nome_genero
+                        WHERE ID_genero = :genero_id
+                    '''
+                ),
+                {**request.form, 'genero_id': genero_id}
+            )
+            conn.commit()
+        return redirect(url_for('genero.generos'))
+    
+    with engine.begin() as conn:
+        data = conn.execute(text('SELECT * FROM generos WHERE ID_genero = :genero_id'), {'genero_id': genero_id})
+        genero = data.fetchone()
+    return render_template('generos/editar_genero.html', genero=genero)
