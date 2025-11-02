@@ -22,7 +22,7 @@
                 <li><a href="{{ url_for('auth_bp.register') }}">Cadastro</a></li>
                 <li><a href="{{ url_for('auth_bp.login') }}">Login</a></li>
                 <li><a href="{{ url_for('livro.register_livros') }}">Livros</a></li>
-                <li><a href="">Gênero</a></li>
+                <li><a href="{{ url_for('genero.register_generos') }}">Gênero</a></li>
                 <li><a href="">Autores</a></li>
                 <li><a href="">Emprestimos</a></li>
                 {% if current_user.is_authenticated %}

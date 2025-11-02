@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from database.models import Usuarios, Base
 from controllers.auth import auth_bp
 from controllers.livro import livro
+from controllers.genero import genero
 from database import engine
 
 app = Flask(__name__)
@@ -27,3 +28,4 @@ def index():
 # app.register_blueprint(products.bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(livro)
+app.register_blueprint(genero)
