@@ -12,15 +12,30 @@
     {% include 'components/messages.html' %}
     <button><a href="{{ url_for('autor.register_autores') }}">Adicionar autor</a></button>
     {% if autores %}
-        {% for autor in autores %}
-            <div class="autores">
-                <span>{{ autor[1] }}</span>
-                <span>{{ autor[2] }}</span>
-                <span>{{ autor[3] }}</span>
-                <span>{{ autor[4] }}</span>
-                <button><a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">Editar</a></button>
-                <button><a href="">Excluir</a></button>
-            </div>
-        {% endfor %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Nacionalidade</th>
+                    <th>Data de Nascimento</th>
+                    <th>Biografia</th>
+                    <th colspan="2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for autor in autores %}
+                    <tr>
+                        <td>{{ autor[1] }}</td>
+                        <td>{{ autor[2] }}</td>
+                        <td>{{ autor[3] }}</td>
+                        <td>{{ autor[4] or 'Não há' }}</td>
+                        <td><button><a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">Editar</a></button></td>
+                        <td><button><a href="">Excluir</a></button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>Não há autores cadastrados</h2>
     {% endif %}
 {% endblock %}

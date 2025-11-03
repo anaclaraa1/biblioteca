@@ -9,14 +9,27 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'components/messages.html' %}
     <button><a href="{{ url_for('genero.register_generos') }}">Adicionar gênero</a></button>
     {% if generos %}
-        {% for genero in generos %}
-            <div class="generos">
-                <span>{{ genero[1] }}</span>
-                <button><a href="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}">Editar</a></button>
-                <button><a href="">Excluir</a></button>
-            </div>
-        {% endfor %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Gênero</th>
+                    <th colspan="2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for genero in generos %}
+                    <tr>
+                        <td>{{ genero[1] }}</td>
+                        <td><button><a href="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}">Editar</a></button></td>
+                        <td><button><a href="">Excluir</a></button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>Não há generos cadastrados</h2>
     {% endif %}
 {% endblock %}

@@ -32,7 +32,7 @@ def register_editoras():
                 )
                 db.commit()
                 flash('Editora cadastrada com sucesso!', category='success')
-                return redirect(url_for('index'))
+                return redirect(url_for('editora.editoras'))
             flash('Esta editora já está cadastrada no sistema.!', category='error')
     return render_template('editora/register_editora.html')
 
@@ -63,6 +63,7 @@ def editar_editora(editora_id: int):
                 {**request.form, 'editora_id': editora_id}
             )
             conn.commit()
+        flash('Dados alterados com sucesso', category='success')
         return redirect(url_for('editora.editoras'))
     
     with engine.begin() as conn:

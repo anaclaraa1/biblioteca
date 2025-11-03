@@ -36,7 +36,7 @@ def register_autores():
                 )
                 db.commit()
                 flash('Autor cadastrada com sucesso!', category='success')
-                return redirect(url_for('index'))
+                return redirect(url_for('autor.autores'))
             flash('Este autor já está cadastrado no sistema.!', category='error')
     return render_template('autores/register_autor.html')
 
@@ -69,6 +69,7 @@ def editar_autor(autor_id: int):
                 {**request.form, 'autor_id': autor_id}
             )
             conn.commit()
+        flash('Dados do alterados com sucesso', category='success')
         return redirect(url_for('autor.autores'))
     
     with engine.begin() as conn:

@@ -12,13 +12,26 @@
     {% include 'components/messages.html' %}
     <button><a href="{{ url_for('editora.register_editoras') }}">Adicionar editora</a></button>
     {% if editoras %}
-        {% for editora in editoras %}
-            <div class="editoras">
-                <span>{{ editora[1] }}</span>
-                <span>{{ editora[2] }}</span>
-                <button><a href="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}">Editar</a></button>
-                <button><a href="">Excluir</a></button>
-            </div>
-        {% endfor %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Endereço</th>
+                    <th colspan="2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for editora in editoras %}
+                    <tr>
+                        <td>{{ editora[1] }}</td>
+                        <td>{{ editora[2] }}</td>
+                        <td><button><a href="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}">Editar</a></button></td>
+                        <td><button><a href="">Excluir</a></button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>Não há editoras cadastradas</h2>
     {% endif %}
 {% endblock %}

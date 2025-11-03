@@ -30,7 +30,7 @@ def register_generos():
                 )
                 db.commit()
                 flash('Gênero cadastrada com sucesso!', category='success')
-                return redirect(url_for('index'))
+                return redirect(url_for('genero.generos'))
             flash('Este gênero já está cadastrado no sistema.!', category='error')
     return render_template('generos/register_genero.html')
 
@@ -60,6 +60,7 @@ def editar_genero(genero_id: int):
                 {**request.form, 'genero_id': genero_id}
             )
             conn.commit()
+        flash('Dados alterados com sucesso', category='success')
         return redirect(url_for('genero.generos'))
     
     with engine.begin() as conn:
