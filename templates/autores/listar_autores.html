@@ -25,10 +25,10 @@
             <tbody>
                 {% for autor in autores %}
                     <tr>
-                        <td>{{ autor[1] }}</td>
-                        <td>{{ autor[2] }}</td>
-                        <td>{{ autor[3] }}</td>
-                        <td>{{ autor[4] or 'Não há' }}</td>
+                        <td>{{ autor.Nome_autor }}</td>
+                        <td>{{ autor.Nacionalidade }}</td>
+                        <td>{{ autor.Data_nascimento }}</td>
+                        <td>{{ autor.Biografia or 'Não há' }}</td>
                         <td><button><a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">Editar</a></button></td>
                         <td><button><a href="">Excluir</a></button></td>
                     </tr>

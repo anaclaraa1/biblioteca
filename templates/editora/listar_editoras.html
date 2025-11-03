@@ -23,8 +23,8 @@
             <tbody>
                 {% for editora in editoras %}
                     <tr>
-                        <td>{{ editora[1] }}</td>
-                        <td>{{ editora[2] }}</td>
+                        <td>{{ editora.Nome_editora }}</td>
+                        <td>{{ editora.Endereco_editora }}</td>
                         <td><button><a href="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}">Editar</a></button></td>
                         <td><button><a href="">Excluir</a></button></td>
                     </tr>

@@ -22,7 +22,7 @@
             <tbody>
                 {% for genero in generos %}
                     <tr>
-                        <td>{{ genero[1] }}</td>
+                        <td>{{ genero.Nome_genero }}</td>
                         <td><button><a href="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}">Editar</a></button></td>
                         <td><button><a href="">Excluir</a></button></td>
                     </tr>
