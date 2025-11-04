@@ -1,11 +1,21 @@
 from flask import render_template, url_for, request,redirect, Blueprint, flash
 from flask_login import login_required
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import  text
 from database import engine
 
 
 livro = Blueprint('livro', __name__, template_folder='../templates')
+
+@livro.route('/livros', methods=['GET'])
+@login_required
+def livros():
+    with engine.begin() as conn:
+        data = conn.execute(text('SELECT * FROM livros LEFT JOIN autores ON autores.ID_autor = livros.Autor_id LEFT JOIN generos ON generos.ID_genero = livros.Genero_id LEFT JOIN editoras ON editoras.ID_editora = livros.Editora_id'))
+        livros = data.all()
+        
+    return render_template('livros/listar_livros.html', livros=livros)
 
 
 @livro.route('/register_livros', methods=['GET', 'POST'])
@@ -47,3 +57,23 @@ def register_livros():
         lista_generos = db.execute(text("SELECT * FROM Generos"))
         lista_editoras = db.execute(text("SELECT * FROM Editoras"))
     return render_template('livros/register_livros.html', lista_generos=lista_generos, lista_editoras=lista_editoras, lista_autores=lista_autores)
+
+@livro.route('/deletar_livros/<int:livro_id>')
+@login_required
+def deletar_livros(livro_id: int):
+    with engine.begin() as conn:
+        try:
+            conn.execute(
+                text(
+                    '''
+                        delete from livros where ID_livro = :livro_id
+                    '''
+                ),
+                {'livro_id': livro_id}
+            )
+            conn.commit()
+        except IntegrityError:
+            flash('Não é possível deletar o livro', category='error')
+        else:
+            flash('Livro deletado com sucesso', category='success')
+    return redirect(url_for('livro.livros'))
