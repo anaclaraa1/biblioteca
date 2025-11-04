@@ -1,7 +1,8 @@
 from flask import render_template, url_for, request,redirect, Blueprint, flash
 from flask_login import login_required
 from sqlalchemy.orm import Session
-from sqlalchemy import  text
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 from database import engine
 
 
@@ -76,3 +77,23 @@ def editar_autor(autor_id: int):
         data = conn.execute(text('SELECT * FROM autores WHERE ID_autor = :autor_id'), {'autor_id': autor_id})
         autor = data.fetchone()
     return render_template('autores/editar_autor.html', autor=autor)
+
+@autor.route('/deletar_autor/<int:autor_id>')
+@login_required
+def deletar_autor(autor_id: int):
+    with engine.begin() as conn:
+        try:
+            conn.execute(
+                text(
+                    '''
+                        delete from autores where ID_autor = :autor_id
+                    '''
+                ),
+                {'autor_id': autor_id}
+            )
+            conn.commit()
+        except IntegrityError:
+            flash('Não é possível deletar o autor', category='error')
+        else:
+            flash('Autor deletado com sucesso', category='success')
+    return redirect(url_for('autor.autores'))
