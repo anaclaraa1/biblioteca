@@ -11,12 +11,38 @@
 {% block content %}
     <button><a href="">Adicionar livro</a></button>
     {% if livros %}
-        {% for livro in livros %}
-            <div class="livros">
-                <!-- informações -->
-                <a href="">Editar</a>
-                <a href="">Excluir</a>
-            </div>
-        {% endfor %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Autor</th>
+                    <th>ISBN</th>
+                    <th>Ano de publicação</th>
+                    <th>Gênero</th>
+                    <th>Editora</th>
+                    <th>Quantidade disponível</th>
+                    <th>Resumo</th>
+                    <th colspan="2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros %}
+                    <tr>
+                        <td>{{ livro.Titulo }}</td>
+                        <td>{{ livro.Nome_autor or 'Não há' }} </td>
+                        <td>{{ livro.ISBN }}</td>
+                        <td>{{ livro.Ano_publicacao }}</td>
+                        <td>{{ livro.Nome_genero or 'Não há'  }}</td>
+                        <td>{{ livro.Nome_editora or 'Não há' }}</td>
+                        <td>{{ livro.Quantidade_disponivel }}</td>
+                        <td>{{ livro.Resumo or 'Não há' }}</td>
+                        <td><button><a href="">Editar</a></button></td>
+                        <td><button><a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}">Excluir</a></button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>Não há livros cadastrados</h2>
     {% endif %}
 {% endblock %}
