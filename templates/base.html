@@ -7,37 +7,40 @@
     <title>
         {% block title %}{% endblock %}
     </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
-    <header>
-        <nav>
-            <h1>
-                {% block title_page %}{% endblock %}
-            </h1>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
-                {% if current_user.is_authenticated %}
+    <div class="content">
+        <header>
+            <nav>
+                <h1>BiblioTecla</h1>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
+                    {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('livro.register_livros') }}">Livros</a></li>
                     <li><a href="{{ url_for('genero.generos') }}">Gênero</a></li>
                     <li><a href="{{ url_for('editora.editoras') }}">Editora</a></li>
                     <li><a href="{{ url_for('autor.autores') }}">Autores</a></li>
                     <li><a href="">Emprestimos</a></li>
                     <li><a href="{{ url_for('auth_bp.logout') }}" onclick="return confirm('Você deseja sair?')">Logout</a></li>
-                {% else %}
+                    {% else %}
                     <li><a href="{{ url_for('auth_bp.register') }}">Cadastro</a></li>
                     <li><a href="{{ url_for('auth_bp.login') }}">Login</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        {% block content %}
-
-        {% endblock %}
-    </main>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <h2>
+                {% block title_page %}{% endblock %}
+            </h2>
+            {% include 'components/messages.html'   %}
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
 </body>
 
 </html>
