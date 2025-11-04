@@ -30,7 +30,7 @@
                         <td>{{ autor.Data_nascimento }}</td>
                         <td>{{ autor.Biografia or 'Não há' }}</td>
                         <td><button><a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">Editar</a></button></td>
-                        <td><button><a href="">Excluir</a></button></td>
+                        <td><button><a href="{{ url_for('autor.deletar_autor', autor_id=autor.ID_autor) }}">Excluir</a></button></td>
                     </tr>
                 {% endfor %}
             </tbody>
