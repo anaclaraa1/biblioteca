@@ -19,7 +19,7 @@
                 <ul>
                     <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
                     {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('livro.register_livros') }}">Livros</a></li>
+                    <li><a href="{{ url_for('livro.livros') }}">Livros</a></li>
                     <li><a href="{{ url_for('genero.generos') }}">Gênero</a></li>
                     <li><a href="{{ url_for('editora.editoras') }}">Editora</a></li>
                     <li><a href="{{ url_for('autor.autores') }}">Autores</a></li>

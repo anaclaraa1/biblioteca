@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <button><a href="">Adicionar livro</a></button>
+    <button><a href="{{ url_for('livro.register_livros') }}">Adicionar livro</a></button>
     {% if livros %}
         <table>
             <thead>
@@ -36,7 +36,7 @@
                         <td>{{ livro.Nome_editora or 'Não há' }}</td>
                         <td>{{ livro.Quantidade_disponivel }}</td>
                         <td>{{ livro.Resumo or 'Não há' }}</td>
-                        <td><button><a href="">Editar</a></button></td>
+                        <td><button><a href="{{ url_for('livro.editar_livro', livro_id=livro.ID_livro) }}">Editar</a></button></td>
                         <td><button><a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}">Excluir</a></button></td>
                     </tr>
                 {% endfor %}
