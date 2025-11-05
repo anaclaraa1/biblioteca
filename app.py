@@ -5,6 +5,7 @@ from controllers.livro import livro
 from controllers.genero import genero
 from controllers.editora import editora
 from controllers.autor import autor
+from controllers.emprestimo import emprestimo
 
 
 app = Flask(__name__)
@@ -21,3 +22,4 @@ app.register_blueprint(livro)
 app.register_blueprint(genero)
 app.register_blueprint(editora)
 app.register_blueprint(autor)
+app.register_blueprint(emprestimo)

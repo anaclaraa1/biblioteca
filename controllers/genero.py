@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy import  text
 from database import engine
 
-
 genero = Blueprint('genero', __name__, template_folder='../templates')
 
 
