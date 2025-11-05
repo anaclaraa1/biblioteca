@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Gêneros
+Gêneros
 {% endblock %}
 
 {% block title_page %}
-    Gêneros
+Gêneros
 {% endblock %}
 
 {% block content %}
     {% include 'components/messages.html' %}
-    <button><a href="{{ url_for('genero.register_generos') }}">Adicionar gênero</a></button>
+    <a href="{{ url_for('genero.register_generos') }}">
+        <button>Adicionar gênero</button>
+    </a>
     {% if generos %}
         <table>
             <thead>
@@ -21,11 +23,23 @@
             </thead>
             <tbody>
                 {% for genero in generos %}
-                    <tr>
-                        <td>{{ genero.Nome_genero }}</td>
-                        <td><button><a href="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}">Editar</a></button></td>
-                        <td><button><a href="">Excluir</a></button></td>
-                    </tr>
+                <tr>
+                    <td>{{ genero.Nome_genero }}</td>
+                    <td>
+                        <a href="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}">
+                            <button>
+                                Editar
+                            </button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <button>
+                                Excluir
+                            </button>
+                        </a>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
