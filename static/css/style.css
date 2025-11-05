@@ -73,7 +73,7 @@ form {
     flex-direction: column;
     width: 28rem;
     padding: 2rem;
-    gap: 10px;
+    gap: 1rem;
     background-color: hsl(from var(--cor1) h s calc(l + 30));
 }
 
@@ -116,9 +116,13 @@ th {
 button {
     padding: .25rem .5rem;
     border: 1px solid var(--cor3);
-    transform: translate(-2px, -2px);
+    background-color: hsl(from var(--cor1) h s calc(l + 30));
     aspect-ratio: 20 / 2;
-    box-shadow: 2px 2px 0 var(--cor3);
+    
+    &:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 2px 2px 0 var(--cor3);
+    }
 
     &:active {
         transform: none;

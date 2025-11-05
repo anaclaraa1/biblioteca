@@ -11,13 +11,13 @@
 {% block content %}
     <form action="" method="post">
         <label for="data_emprestimo">Data do empréstimo:</label>
-        <input type="date" name="data_emprestimo" placeholder="empréstimo">
+        <input type="date" id="data_emprestimo" name="data_emprestimo" placeholder="empréstimo" required>
         <label for="data_devolucao">Data da devolução:</label>
-        <input type="date" name="data_devolucao" placeholder="devolução">
+        <input type="date" id="data_devolucao" name="data_devolucao" placeholder="devolução" required>
         <label for="data_devolucao_real">Data da devolução real:</label>
-        <input type="date" name="data_devolucao_real" placeholder="devolução real">
+        <input type="date" id="data_devolucao_real" name="data_devolucao_real" placeholder="devolução real" required>
         <label for="status">Status:</label>
-        <select name="status">
+        <select id="status" name="status">
             <option value="pendente">Pendente</option>
             <option value="devolvido">Devolvido</option>
             <option value="atrasado">Atrasado</option>

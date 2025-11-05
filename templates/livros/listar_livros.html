@@ -46,7 +46,7 @@ Livros
                             </a>
                         </td>
                         <td>
-                            <a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}">
+                            <a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}" onclick="return confirm('Você tem certeza que quer apagar o livro {{ livro.Titulo }}')">
                                 <button>
                                     Excluir
                                 </button>

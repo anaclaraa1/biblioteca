@@ -11,34 +11,34 @@
 {% block content %}
     <form action="" method="post">
         <label for="titulo">Título:</label>
-        <input type="text" name="titulo" placeholder="título">
+        <input type="text" id="titulo" name="titulo" placeholder="título" required>
         <label for="ISBN">ISBN:</label>
-        <input type="text" name="ISBN" placeholder="ISBN">
+        <input type="text" id="ISBN" name="ISBN" placeholder="ISBN" required>
         <label for="autor">Autor:</label>
-        <select name="autor">
+        <select id="autor" name="autor">
             {% for autor in lista_autores %}  
                 <option value="{{autor.ID_autor}}">{{autor.Nome_autor}}</option>
             {% endfor %}
             <!-- <option value=""></option> -->
         </select>
         <label for="ano">Ano de publicação:</label>
-        <input type="num" name="ano" placeholder="ano">
+        <input type="num" id="ano" name="ano" placeholder="ano" required>
         <label for="genero">Gênero:</label>
-        <select name="genero">
+        <select id="genero" name="genero">
             {% for genero in lista_generos %}  
                 <option value="{{genero.ID_genero}}">{{genero.Nome_genero}}</option>
             {% endfor %}
         </select>
         <label for="editora">Editora:</label>
-        <select name="editora">
+        <select id="editora" name="editora">
             {% for editora in lista_editoras %}  
                 <option value="{{editora.ID_editora}}">{{editora.Nome_editora}}</option>
             {% endfor %}
         </select>
         <label for="qnt_disponivel">Quantidade disponível:</label>
-        <input type="number" name="qnt_disponivel" placeholder="quantidade">
+        <input type="number" id="qnt_disponivel" name="qnt_disponivel" placeholder="quantidade" required>
         <label for="resumo">Resumo:</label>
-        <textarea name="resumo" placeholder="Escreva algo..."></textarea>
+        <textarea id="resumo" name="resumo" placeholder="Escreva algo..." required></textarea>
         <button>Enviar</button>
     </form>
 {% endblock %}

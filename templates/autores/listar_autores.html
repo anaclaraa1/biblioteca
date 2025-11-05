@@ -37,7 +37,7 @@
                             </a>
                         </td>
                         <td>
-                            <a href="{{ url_for('autor.deletar_autor', autor_id=autor.ID_autor) }}">
+                            <a href="{{ url_for('autor.deletar_autor', autor_id=autor.ID_autor) }}" onclick="return confirm('Você tem certeza que quer apagar o autor {{ autor.Nome_autor }}')">
                                 <button>Excluir</button>
                             </a>
                         </td>
