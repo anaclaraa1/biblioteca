@@ -38,6 +38,9 @@
                         <td>{{ livro.Resumo or 'Não há' }}</td>
                         <td><button><a href="{{ url_for('livro.editar_livro', livro_id=livro.ID_livro) }}">Editar</a></button></td>
                         <td><button><a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}">Excluir</a></button></td>
+                        {% if livro.Quantidade_disponivel >= 1 %}
+                            <td><button><a href="{{ url_for('emprestimo.register_emprestimo', livro_id=livro.ID_livro)}}">Reservar</a></button></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
