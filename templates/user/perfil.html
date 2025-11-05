@@ -17,8 +17,8 @@
             <p>Telefone: {{user.Numero_telefone}}</p>
             <p>Data de inscrição: {{user.Data_inscricao}}</p>
             <p>Multa: {{user.Multa_atual}}</p>
-            <button><a href="{{ url_for('perfil.editar_perfil', user_id=user.ID_usuario) }}">Editar</a></button>
-            <button><a href="{{ url_for('perfil.deletar_perfil', user_id=user.ID_usuario) }}">Deletar</a></button>
+            <a href="{{ url_for('perfil.editar_perfil', user_id=user.ID_usuario) }}"><button>Editar</button></a>
+            <a href="{{ url_for('perfil.deletar_perfil', user_id=user.ID_usuario) }}" onclick="return confirm('Você tem certeza que deseja apagar o seu perfil?')"><button>Deletar</button></a>
         </div>
     {% endif %}
 {% endblock %}

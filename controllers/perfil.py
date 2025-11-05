@@ -2,7 +2,7 @@ from flask import render_template, request, Blueprint, flash, redirect, url_for
 from flask_login import login_required, current_user, logout_user
 from database import engine
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
+
 
 perfil = Blueprint('perfil', __name__, template_folder='../templates')
 
@@ -17,6 +17,7 @@ def visualizar():
         
     return render_template('user/perfil.html', user=user)
 
+
 @perfil.route('/editar_perfil/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def editar_perfil(user_id: int):
@@ -28,7 +29,7 @@ def editar_perfil(user_id: int):
                         UPDATE usuarios
                         SET Nome_usuario = :nome,
                         Email = :email,
-                        Numero_telefone =:tel
+                        Numero_telefone = :tel
                         WHERE ID_usuario = :user_id
                     '''
                 ),
@@ -39,9 +40,10 @@ def editar_perfil(user_id: int):
         return redirect(url_for('perfil.visualizar'))
     
     with engine.begin() as conn:
-        data = conn.execute(text('SELECT * FROM usuarios WHERE ID_usuario =: user_id'), {'user_id': user_id})
+        data = conn.execute(text('SELECT * FROM usuarios WHERE ID_usuario = :user_id'), {'user_id': user_id})
         user = data.fetchone()
     return render_template('user/editar.html', user=user)
+
 
 @perfil.route('/deletar_perfil/<int:user_id>', methods=['GET'])
 @login_required

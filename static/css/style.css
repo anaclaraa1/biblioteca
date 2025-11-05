@@ -155,3 +155,11 @@ button {
     border-radius: 50%;
     background-color: var(--cor1);
 }
+
+.perfil a:has(button) {
+    width: 100%;
+
+    & > button {
+        width: 100%;
+    }
+}

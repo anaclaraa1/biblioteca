@@ -11,12 +11,11 @@
 {% block content %}
     <form action="{{ url_for('perfil.editar_perfil', user_id=user.ID_usuario) }}" method="post">
         <label for="nome">Nome:</label>
-        <input type="text" name="nome" placeholder="nome", value="{{ user.Nome_usuario }}">
+        <input type="text" id="nome" name="nome" placeholder="nome" value="{{ user.Nome_usuario }}" required>
         <label for="email">Email:</label>
-        <input type="email" name="email" placeholder="email", value="{{ user.Email }}">
+        <input type="email" id="email" name="email" placeholder="email" value="{{ user.Email }}" required>
         <label for="tel">Telefone:</label>
-        <input type="tel" name="tel" placeholder="telefone", value="{{ user.Numero_telefone }}">
+        <input type="tel" id="tel" name="tel" placeholder="telefone" value="{{ user.Numero_telefone }}" required>
         <button>Enviar</button>
     </form>
-    
 {% endblock %}
