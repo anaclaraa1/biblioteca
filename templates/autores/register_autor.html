@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'components/messages.html'   %}
     <form action="{{ url_for('autor.register_autores') }}" method="post">
         <label for="nome">Nome:</label>
         <input type="text" name="nome" placeholder="nome">

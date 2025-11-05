@@ -35,4 +35,50 @@ def register_emprestimo(livro_id: int):
                 {'qtd': resultado.Quantidade_disponivel - 1, 'id': livro_id}
         )
         conn.commit()
+        flash('Livro reservado com sucesso!', category='success')
         return redirect(url_for('livro.livros'))
+    
+@emprestimo.route('/emprestimos', methods=['GET'])
+@login_required
+def visualizar():
+    user_id = current_user.id
+    with engine.begin() as conn:
+        data = conn.execute(
+            text('''SELECT * FROM emprestimos JOIN livros ON livros.ID_livro = emprestimos.Livro_id WHERE Usuario_id = :user_id'''),
+            {'user_id': user_id}
+        )
+        emprestimos = data.all()
+
+    return render_template('emprestimos/listar_emprestimo.html', emprestimos=emprestimos)
+
+@emprestimo.route('/devolucao/<int:emprestimo_id>', methods=['GET'])
+def devolucao(emprestimo_id: int):
+    with engine.begin() as conn:
+        data = conn.execute(
+            text('SELECT * FROM emprestimos JOIN livros ON emprestimos.Livro_id = livros.ID_livro WHERE ID_emprestimo = :emprestimo_id'),
+            {'emprestimo_id': emprestimo_id}
+        ).fetchone()
+
+        conn.execute(
+            text('''
+                    UPDATE livros SET 
+                    Quantidade_disponivel = Quantidade_disponivel + 1 
+                    WHERE ID_livro = :livro_id
+                 '''),
+            {'livro_id': data.ID_livro}
+        )
+        
+        data_devolucao_real = date.today()
+        
+        conn.execute(
+            text('''
+                UPDATE emprestimos SET
+                Status_emprestimo = 'devolvido',
+                Data_devolucao_real = :data
+                WHERE ID_emprestimo = :emprestimo_id'''),
+            {'emprestimo_id': emprestimo_id, 'data': data_devolucao_real}
+        )
+
+        flash('Livro devolvido com sucesso!', category='success')
+        return redirect(url_for('emprestimo.visualizar'))
+    

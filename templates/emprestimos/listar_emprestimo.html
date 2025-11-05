@@ -10,12 +10,33 @@
 
 {% block content %}
     {% if emprestimos %}
-        {% for emprestimo in emprestimos %}
-            <div class="emprestimos">
-                <!-- informações -->
-                <a href="">Editar</a>
-                <a href="">Excluir</a>
-            </div>
-        {% endfor %}
+            <table>
+                <thead>
+                    <th>ID</th>
+                    <th>Livro</th>
+                    <th>Data do empréstimo</th>
+                    <th>Data da devolução prevista</th>
+                    <th>Data da devolução real</th>
+                    <th>Status</th>
+                    <th colspan="3">Ações</th>
+                </thead>
+                <tbody>
+                    {% for emprestimo in emprestimos %}
+                        <tr>
+                            <td>{{emprestimo.ID_emprestimo}}</td>
+                            <td>{{emprestimo.Titulo}}</td>
+                            <td>{{emprestimo.Data_emprestimo}}</td>
+                            <td>{{emprestimo.Data_devolucao_prevista}}</td>
+                            <td>{{emprestimo.Data_devolucao_real or 'Ainda não devolvido'}}</td>
+                            <td>{{emprestimo.Status_emprestimo}}</td>
+                            {% if emprestimo.Status_emprestimo != 'devolvido' %}
+                                <td><button><a href="{{ url_for('emprestimo.devolucao', emprestimo_id=emprestimo.ID_emprestimo) }}">Devolver</a></button></td>
+                            {% endif %}
+                            <td><button><a href="">Editar</a></button></td>
+                            <td><button><a href="">Excluir</a></button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
     {% endif %}
 {% endblock %}
