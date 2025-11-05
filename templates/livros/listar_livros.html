@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Livros
+Livros
 {% endblock %}
 
 {% block title_page %}
-    Livros
+Livros
 {% endblock %}
 
 {% block content %}
-    <button><a href="{{ url_for('livro.register_livros') }}">Adicionar livro</a></button>
+    <a href="{{ url_for('livro.register_livros') }}">
+        <button>Adicionar livro</button>
+    </a>
     {% if livros %}
         <table>
             <thead>
@@ -42,6 +44,30 @@
                             <td><button><a href="{{ url_for('emprestimo.register_emprestimo', livro_id=livro.ID_livro)}}">Reservar</a></button></td>
                         {% endif %}
                     </tr>
+                <tr>
+                    <td>{{ livro.Titulo }}</td>
+                    <td>{{ livro.Nome_autor or 'Não há' }} </td>
+                    <td>{{ livro.ISBN }}</td>
+                    <td>{{ livro.Ano_publicacao }}</td>
+                    <td>{{ livro.Nome_genero or 'Não há' }}</td>
+                    <td>{{ livro.Nome_editora or 'Não há' }}</td>
+                    <td>{{ livro.Quantidade_disponivel }}</td>
+                    <td>{{ livro.Resumo or 'Não há' }}</td>
+                    <td>
+                        <a href="{{ url_for('livro.editar_livro', livro_id=livro.ID_livro) }}">
+                            <button>
+                                Editar
+                            </button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}">
+                            <button>
+                                Excluir
+                            </button>
+                        </a>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

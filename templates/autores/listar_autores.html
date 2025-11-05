@@ -10,7 +10,9 @@
 
 {% block content %}
     {% include 'components/messages.html' %}
-    <button><a href="{{ url_for('autor.register_autores') }}">Adicionar autor</a></button>
+    <a href="{{ url_for('autor.register_autores') }}">
+        <button>Adicionar autor</button>
+    </a>
     {% if autores %}
         <table>
             <thead>
@@ -29,8 +31,16 @@
                         <td>{{ autor.Nacionalidade }}</td>
                         <td>{{ autor.Data_nascimento }}</td>
                         <td>{{ autor.Biografia or 'Não há' }}</td>
-                        <td><button><a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">Editar</a></button></td>
-                        <td><button><a href="{{ url_for('autor.deletar_autor', autor_id=autor.ID_autor) }}">Excluir</a></button></td>
+                        <td>
+                            <a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">
+                                <button>Editar</button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('autor.deletar_autor', autor_id=autor.ID_autor) }}">
+                                <button>Excluir</button>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

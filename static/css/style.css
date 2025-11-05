@@ -1,23 +1,35 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
     margin: 0;
     padding: 0;
+    border: 0;
     box-sizing: border-box;
+    color: var(--cor3);
+}
+
+:root {
+    --cor1: #D9C8B4;
+    --cor2: #8C7961;
+    --cor3: #593E10;
+    --cor4: #8E7756;
+    --font: 'Noto Serif'
 }
 
 body {
     height: 100vh;
 }
 
-.content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
 header {
     display: flex;
+    align-items: center;
+    height: 80px;
     width: 100%;
     padding: 15px 25px;
+    color: var(--cor3);
+    background-color: hsl(from var(--cor1) h s calc(l + 30));
 }
 
 nav {
@@ -37,37 +49,78 @@ ul > li {
 }
 
 a {
+    color: inherit;
     text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 main {
     display: flex;
     flex-direction: column;
-    height: 100%;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    min-height: calc(100vh - 80px);
+    padding: 3rem 6rem;
+    gap: 1rem;
+    background-color: hsl(from var(--cor2) h s calc(l + 30));
 }
 
 form {
     display: flex;
     flex-direction: column;
-    width: 500px;
-    padding: 15px;
+    width: 28rem;
+    padding: 2rem;
     gap: 10px;
+    background-color: hsl(from var(--cor1) h s calc(l + 30));
+}
+
+input, select {
+    outline: none;
+    padding-inline: 1rem;
+    aspect-ratio: 20 / 2;
+    font-size: 1rem;
+    color: black;
+    background-color: hsl(from var(--cor1) h 0 calc(l + 15));
 }
 
 textarea {
-  resize: none;
+    outline: none;
+    padding: .5rem;
+    aspect-ratio: 20 / 2;
+    font-size: 1rem;
+    background-color: hsl(from var(--cor1) h 0 calc(l + 15));
+    color: black;
+    resize: none;
 }
 
 table {
-    border: 1px solid black;
+    border: 1px solid var(--cor3);
     border-collapse: collapse;
     text-align: center;
+    background-color: hsl(from var(--cor1) h s calc(l + 30));
 }
 
 tr, td, th {
-    border: 1px solid black;
+    border: 1px solid var(--cor3);
     padding: 5px 10px;
+    color: black;
+}
+
+th {
+    color: var(--cor3);
+}
+
+button {
+    padding: .25rem .5rem;
+    border: 1px solid var(--cor3);
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0 var(--cor3);
+
+    &:active {
+        transform: none;
+        box-shadow: none;
+    }
 }

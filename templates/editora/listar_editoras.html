@@ -10,7 +10,9 @@
 
 {% block content %}
     {% include 'components/messages.html' %}
-    <button><a href="{{ url_for('editora.register_editoras') }}">Adicionar editora</a></button>
+    <a href="{{ url_for('editora.register_editoras') }}">
+        <button>Adicionar editora</button>
+    </a>
     {% if editoras %}
         <table>
             <thead>
@@ -25,8 +27,16 @@
                     <tr>
                         <td>{{ editora.Nome_editora }}</td>
                         <td>{{ editora.Endereco_editora }}</td>
-                        <td><button><a href="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}">Editar</a></button></td>
-                        <td><button><a href="">Excluir</a></button></td>
+                        <td>
+                            <a href="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}">
+                                <button>Editar</button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="">
+                                <button>Excluir</button>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
