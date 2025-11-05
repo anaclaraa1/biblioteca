@@ -29,7 +29,7 @@ def register_generos():
                         }
                 )
                 db.commit()
-                flash('Gênero cadastrada com sucesso!', category='success')
+                flash('Gênero cadastrado com sucesso!', category='success')
                 return redirect(url_for('genero.generos'))
             flash('Este gênero já está cadastrado no sistema.!', category='error')
     return render_template('generos/register_genero.html')

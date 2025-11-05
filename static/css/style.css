@@ -117,6 +117,7 @@ button {
     padding: .25rem .5rem;
     border: 1px solid var(--cor3);
     transform: translate(-2px, -2px);
+    aspect-ratio: 20 / 2;
     box-shadow: 2px 2px 0 var(--cor3);
 
     &:active {

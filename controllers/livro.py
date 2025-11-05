@@ -51,7 +51,7 @@ def register_livros():
                     }
             )
             db.commit()
-            flash('Livro cadastrada com sucesso!', category='success')
+            flash('Livro cadastrado com sucesso!', category='success')
             return redirect(url_for('livro.livros'))
     
     with Session(bind=engine) as db:

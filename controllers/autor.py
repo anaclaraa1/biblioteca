@@ -36,7 +36,7 @@ def register_autores():
                         }
                 )
                 db.commit()
-                flash('Autor cadastrada com sucesso!', category='success')
+                flash('Autor cadastrado com sucesso!', category='success')
                 return redirect(url_for('autor.autores'))
             flash('Este autor já está cadastrado no sistema.!', category='error')
     return render_template('autores/register_autor.html')
