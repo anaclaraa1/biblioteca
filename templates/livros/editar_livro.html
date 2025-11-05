@@ -11,33 +11,33 @@
 {% block content %}
     <form action="{{ url_for('livro.editar_livro', livro_id=livro.ID_livro) }}" method="post">
         <label for="Titulo">Título:</label>
-        <input type="text" name="Titulo" placeholder="título" value="{{ livro.Titulo }}">
+        <input type="text" id="Titulo" name="Titulo" placeholder="título" value="{{ livro.Titulo }}" required>
         <label for="ISBN">ISBN:</label>
-        <input type="text" name="ISBN" placeholder="ISBN" value="{{ livro.ISBN }}">
+        <input type="text" id="ISBN" name="ISBN" placeholder="ISBN" value="{{ livro.ISBN }}" required>
         <label for="autor">Autor:</label>
-        <select name="Autor_id">
+        <select id="autor" name="Autor_id">
             {% for autor in autores %}
                 <option value="{{ autor.ID_autor }}" {% if livro.Autor_id == autor.ID_autor %}selected{% endif %}>{{ autor.Nome_autor }}</option>
             {% endfor %}
         </select>
         <label for="ano">Ano de publicação:</label>
-        <input type="num" name="Ano_publicacao" placeholder="ano" value="{{ livro.Ano_publicacao }}">
+        <input type="num" id="ano" name="Ano_publicacao" placeholder="ano" value="{{ livro.Ano_publicacao }}" required>
         <label for="genero">Gênero:</label>
-        <select name="Genero_id">
+        <select id="genero" name="Genero_id">
             {% for genero in generos %}
                 <option value="{{ genero.ID_genero }}" {% if livro.Genero_id == genero.ID_genero %}selected{% endif %}>{{ genero.Nome_genero }}</option>
             {% endfor %}
         </select>
         <label for="editora">Editora:</label>
-        <select name="Editora_id">
+        <select id="editora" name="Editora_id">
             {% for editora in editoras %}
                 <option value="{{ editora.ID_editora }}" {% if livro.Editora_id == editora.ID_editora %}selected{% endif %}>{{ editora.Nome_editora }}</option>
             {% endfor %}
         </select>
         <label for="qnt_disponivel">Quantidade disponível:</label>
-        <input type="number" name="Quantidade_disponivel" placeholder="quantidade" value="{{ livro.Quantidade_disponivel }}">
+        <input type="number" id="qnt_disponivel" name="Quantidade_disponivel" placeholder="quantidade" value="{{ livro.Quantidade_disponivel }}" min="0" required>
         <label for="resumo">Resumo:</label>
-        <textarea name="Resumo" placeholder="Escreva algo..." value="{{ livro.Resumo }}"></textarea>
+        <textarea id="resumo" name="Resumo" placeholder="Escreva algo..." value="{{ livro.Resumo }}" required></textarea>
         <button>Enviar</button>
     </form>
 {% endblock %}

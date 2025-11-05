@@ -11,9 +11,9 @@
 {% block content %}
     <form action="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}" method="post">
         <label for="Nome_editora">Nome da editora:</label>
-        <input type="text" name="Nome_editora" placeholder="nome da editora", value="{{ editora.Nome_editora }}">
+        <input type="text" id="Nome_editora" name="Nome_editora" placeholder="nome da editora" value="{{ editora.Nome_editora }}" required>
         <label for="Endereco_editora">Endereço:</label>
-        <input type="text" name="Endereco_editora" placeholder="endereço", value="{{ editora.Endereco_editora }}">
+        <input type="text" id="Endereco_editora" name="Endereco_editora" placeholder="endereço" value="{{ editora.Endereco_editora }}" required>
         <button>Enviar</button>
     </form>
 {% endblock %}

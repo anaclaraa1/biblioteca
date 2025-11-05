@@ -11,9 +11,9 @@
 {% block content %}
     <form action="{{ url_for('editora.register_editoras') }}" method="post">
         <label for="nome_editora">Nome da editora:</label>
-        <input type="text" name="nome_editora" placeholder="nome da editora">
+        <input type="text" id="nome_editora" name="nome_editora" placeholder="nome da editora" required>
         <label for="endereco">Endereço:</label>
-        <input type="text" name="endereco" placeholder="endereço">
+        <input type="text" id="endereco" name="endereco" placeholder="endereço" required>
         <button>Enviar</button>
     </form>
 {% endblock %}

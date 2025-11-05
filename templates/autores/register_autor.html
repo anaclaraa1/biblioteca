@@ -11,13 +11,13 @@
 {% block content %}
     <form action="{{ url_for('autor.register_autores') }}" method="post">
         <label for="nome">Nome:</label>
-        <input type="text" name="nome" placeholder="nome">
+        <input type="text" id="nome" name="nome" placeholder="nome" required>
         <label for="nacionalidade">Nacionalidade:</label>
-        <input type="text" name="nacionalidade" placeholder="nacionalidade">
+        <input type="text" id="nacionalidade" name="nacionalidade" placeholder="nacionalidade" required>
         <label for="nascimento">Nascimento:</label>
-        <input type="date" name="nascimento" placeholder="nascimento">
+        <input type="date" id="nascimento" name="nascimento" placeholder="nascimento" required>
         <label for="biografia">Biografia:</label>
-        <textarea name="biografia" placeholder="Escreva algo..."></textarea>
+        <textarea id="biografia" name="biografia" placeholder="Escreva algo..." required></textarea>
         <button>Enviar</button>
     </form>
 {% endblock %}
