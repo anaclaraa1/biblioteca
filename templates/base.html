@@ -24,6 +24,7 @@
                     <li><a href="{{ url_for('editora.editoras') }}">Editora</a></li>
                     <li><a href="{{ url_for('autor.autores') }}">Autores</a></li>
                     <li><a href="">Emprestimos</a></li>
+                    <li><a href="{{ url_for('perfil.visualizar') }}">Perfil</a></li>
                     <li><a href="{{ url_for('auth_bp.logout') }}" onclick="return confirm('Você deseja sair?')">Logout</a></li>
                     {% else %}
                     <li><a href="{{ url_for('auth_bp.register') }}">Cadastro</a></li>
