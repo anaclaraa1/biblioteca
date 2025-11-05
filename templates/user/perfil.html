@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Perfil
+{% endblock %}
+
+{% block title_page %}
+    Perfil
+{% endblock %}
+
+{% block content %}
+    {% if user %}
+        <div class="perfil">
+            <div></div>
+            <h2>{{user.Nome_usuario}}</h2>
+            <p>Email: {{user.Email}}</p>
+            <p>Telefone: {{user.Numero_telefone}}</p>
+            <p>Data de inscrição: {{user.Data_inscricao}}</p>
+            <p>Multa: {{user.Multa_atual}}</p>
+        </div>
+    {% endif %}
+{% endblock %}

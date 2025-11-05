@@ -125,3 +125,29 @@ button {
         box-shadow: none;
     }
 }
+
+.perfil {
+    background-color: #f7e5d0;
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.perfil > h2 {
+    margin-bottom: 25px;
+}
+
+.perfil > p {
+    align-self: self-start;
+}
+
+.perfil > div {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--cor1);
+}
