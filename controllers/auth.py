@@ -1,5 +1,6 @@
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from database import engine
 from flask_login import login_user, login_required, logout_user
 from database.models import Usuarios
@@ -17,8 +18,26 @@ def register():
         telefone = request.form.get('tel')
         data_atual = date.today()
         with Session(bind=engine) as db:
-            user_exist = db.query(Usuarios).where(Usuarios.Email == email).first()
+            user_exist = db.execute(
+                text('SELECT * FROM usuario WHERE Email = :email'),
+                {'email': email}).fetchone()
             if not user_exist:
+                db.execute(
+                    text("""
+                            INSERT INTO Autores 
+                                (Nome_usuario, Email, Numero_telefone, Data_inscricao, Multa_atual)
+                            VALUES 
+                                (:nome, :email, :tel, :data_inscricao, multa)
+                        """),
+                        {
+                            "nome": nome,
+                            "email": email,
+                            "tel": telefone,
+                            "data_inscricao": data_atual,
+                            "multa": 0
+                        }
+                )
+                db.commit()
                 user_novo = Usuarios(Nome_usuario=nome, Email=email, Data_inscricao=data_atual, Numero_telefone=telefone, Multa_atual=0)
                 db.add(user_novo)
                 db.commit()
