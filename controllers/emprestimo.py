@@ -82,20 +82,27 @@ def devolucao(emprestimo_id: int):
         flash('Livro devolvido com sucesso!', category='success')
         return redirect(url_for('emprestimo.visualizar'))
     
-@emprestimo.route('/editar_emprestimo/<int:id_emprestimo>', methods=['GET', 'POST'])
-def editar_emprestimo(id_emprestimo: int):
+@emprestimo.route('/editar_emprestimo/<int:emprestimo_id>', methods=['GET', 'POST'])
+def editar_emprestimo(emprestimo_id: int):
     if request.method == 'POST':
         with engine.begin() as conn:
             conn.execute(
                 text(
                     '''
-                        UPDATE emprestimos SET Data_emprestimo = :Data_emprestimo, Data_devolucao = :Data_devolucao, Data_devolucao_real = :Data_devolucao_real, Status_emprestimo = :Status_emprestimo
+                        UPDATE emprestimos SET Data_emprestimo = :Data_emprestimo, Data_devolucao_prevista = :Data_devolucao_prevista, Data_devolucao_real = :Data_devolucao_real, Status_emprestimo = :Status_emprestimo WHERE ID_emprestimo = :emprestimo_id
                     '''
                 ),
-                {**request.form}
+                {**request.form, 'emprestimo_id': emprestimo_id}
             )
             conn.commit()
-        
+
         flash('Dados alterados com sucesso!', category='success')
-        return redirect(url_for('perfil.visualizar'))
-    return render_template('emprestimo/editar_emprestimo.html')
+        return redirect(url_for('emprestimo.visualizar'))
+    
+    with engine.begin() as conn:
+        emprestimo = conn.execute(
+            text('''SELECT * FROM emprestimos WHERE ID_emprestimo = :emprestimo_id'''),
+            {'emprestimo_id': emprestimo_id}
+        ).fetchone()
+        
+    return render_template('emprestimos/editar_emprestimo.html', emprestimo=emprestimo)
