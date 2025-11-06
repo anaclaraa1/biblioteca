@@ -106,3 +106,14 @@ def editar_emprestimo(emprestimo_id: int):
         ).fetchone()
         
     return render_template('emprestimos/editar_emprestimo.html', emprestimo=emprestimo)
+
+@emprestimo.route('/deletar_emprestimo/<int:emprestimo_id>', methods=['GET'])
+def deletar_emprestimo(emprestimo_id: int):
+    with engine.begin() as conn:
+        conn.execute(
+            text('''DELETE FROM emprestimos WHERE ID_emprestimo = :emprestimo_id'''),
+            {'emprestimo_id': emprestimo_id}
+        )
+        conn.commit()
+
+    return redirect(url_for('emprestimo.visualizar'))
