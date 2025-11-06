@@ -1,4 +1,4 @@
-from flask import render_template, url_for, request, redirect, Blueprint
+from flask import render_template, url_for, request, redirect, Blueprint, flash
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from database import engine
@@ -44,7 +44,10 @@ def register():
                 user_novo = Usuarios(id= user_atual.ID_usuario, nome=nome, email=email, tel=telefone, data_inscricao=data_atual, multa=0)
                 login_user(user_novo)
                 return redirect(url_for('index'))
-            #f
+            
+            flash('Usuário já cadastrado! Realize o login...', category='error')
+            return redirect(url_for('auth_bp.login'))
+
     return render_template('user/register.html')
 
 
@@ -60,7 +63,10 @@ def login():
             user_exist = Usuarios(id=user_exist.ID_usuario,nome=user_exist.Nome_usuario, email=user_exist.Email, tel=user_exist.Numero_telefone, data_inscricao=user_exist.Data_inscricao, multa=user_exist.Multa_atual)
             login_user(user_exist)
             return redirect(url_for('index'))
-        #f
+        
+        flash('Dados incorretos! Tente novamente...', category='error')
+        return redirect(url_for('auth_bp.login'))
+
     return render_template('user/login.html')
 
 
