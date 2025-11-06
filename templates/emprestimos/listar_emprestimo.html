@@ -33,7 +33,7 @@
                                 <td><a href="{{ url_for('emprestimo.devolucao', emprestimo_id=emprestimo.ID_emprestimo) }}"><button>Devolver</button></a></td>
                             {% endif %}
                             <td><a href="{{ url_for('emprestimo.editar_emprestimo', emprestimo_id=emprestimo.ID_emprestimo) }}"><button>Editar</button></a></td>
-                            <td><a href="{{ url_for('emprestimo.deletar_emprestimo', emprestimo_id=emprestimo.ID_emprestimo) }}"><button>Excluir</button></a></td>
+                            <td><a href="{{ url_for('emprestimo.deletar_emprestimo', emprestimo_id=emprestimo.ID_emprestimo) }}" onclick="return confirm('Você tem certeza que deseja excluir este emprestimo?')"><button>Excluir</button></a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

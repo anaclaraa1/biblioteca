@@ -32,7 +32,7 @@ Gêneros
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for('genero.deletar_genero', genero_id=genero.ID_genero) }}">
+                        <a href="{{ url_for('genero.deletar_genero', genero_id=genero.ID_genero) }}" onclick="return confirm('Você tem certeza que deseja excluir o gênero {{ genero.Nome_genero }}')">
                             <button>
                                 Excluir
                             </button>

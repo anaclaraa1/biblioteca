@@ -18,9 +18,9 @@
         <input type="date" id="data_devolucao_real" name="Data_devolucao_real" placeholder="devolução real">
         <label for="Status_emprestimo">Status:</label>
         <select id="status" name="Status_emprestimo">
-            <option value="pendente">Pendente</option>
-            <option value="devolvido">Devolvido</option>
-            <option value="atrasado">Atrasado</option>
+            <option value="pendente" {% if emprestimo.Status_emprestimo == 'Pendente' %}selected{% endif %}>Pendente</option>
+            <option value="devolvido" {% if emprestimo.Status_emprestimo == 'Devolvido' %}selected{% endif %}>Devolvido</option>
+            <option value="atrasado" {% if emprestimo.Status_emprestimo == 'Atrasado' %}selected{% endif %}>Atrasado</option>
         </select>
         <button>Enviar</button>
     </form>
