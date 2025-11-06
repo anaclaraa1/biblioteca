@@ -82,3 +82,20 @@ def devolucao(emprestimo_id: int):
         flash('Livro devolvido com sucesso!', category='success')
         return redirect(url_for('emprestimo.visualizar'))
     
+@emprestimo.route('/editar_emprestimo/<int:id_emprestimo>', methods=['GET', 'POST'])
+def editar_emprestimo(id_emprestimo: int):
+    if request.method == 'POST':
+        with engine.begin() as conn:
+            conn.execute(
+                text(
+                    '''
+                        UPDATE emprestimos SET Data_emprestimo = :Data_emprestimo, Data_devolucao = :Data_devolucao, Data_devolucao_real = :Data_devolucao_real, Status_emprestimo = :Status_emprestimo
+                    '''
+                ),
+                {**request.form}
+            )
+            conn.commit()
+        
+        flash('Dados alterados com sucesso!', category='success')
+        return redirect(url_for('perfil.visualizar'))
+    return render_template('emprestimo/editar_emprestimo.html')

@@ -1,8 +1,9 @@
 import os
 from dotenv import load_dotenv
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user
 from database import Session, engine
 from database.models import Usuarios
+from sqlalchemy import text
 
 
 def config_app(app):
@@ -20,5 +21,8 @@ def config_app(app):
     @login_manager.user_loader
     def load_user(user_id):
         with Session(bind=engine) as db:
-            user = db.query(Usuarios).where(Usuarios.id == user_id).first()
+            user = db.execute(
+                text('SELECT * FROM Usuarios WHERE ID_usuario = :id'),
+                {'id': user_id}).fetchone()
+            user = Usuarios(id=user.ID_usuario,nome=user.Nome_usuario, email=user.Email, tel=user.Numero_telefone, data_inscricao=user.Data_inscricao, multa=user.Multa_atual)
         return user

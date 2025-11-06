@@ -19,15 +19,15 @@ def register():
         data_atual = date.today()
         with Session(bind=engine) as db:
             user_exist = db.execute(
-                text('SELECT * FROM usuario WHERE Email = :email'),
+                text('SELECT * FROM Usuarios WHERE Email = :email'),
                 {'email': email}).fetchone()
             if not user_exist:
                 db.execute(
                     text("""
-                            INSERT INTO Autores 
+                            INSERT INTO Usuarios
                                 (Nome_usuario, Email, Numero_telefone, Data_inscricao, Multa_atual)
                             VALUES 
-                                (:nome, :email, :tel, :data_inscricao, multa)
+                                (:nome, :email, :tel, :data_inscricao, :multa)
                         """),
                         {
                             "nome": nome,
@@ -38,9 +38,10 @@ def register():
                         }
                 )
                 db.commit()
-                user_novo = Usuarios(Nome_usuario=nome, Email=email, Data_inscricao=data_atual, Numero_telefone=telefone, Multa_atual=0)
-                db.add(user_novo)
-                db.commit()
+                user_atual = db.execute(
+                text('SELECT * FROM Usuarios WHERE Email = :email'),
+                {'email': email}).fetchone()
+                user_novo = Usuarios(id= user_atual.ID_usuario, nome=nome, email=email, tel=telefone, data_inscricao=data_atual, multa=0)
                 login_user(user_novo)
                 return redirect(url_for('index'))
             #f
@@ -52,8 +53,11 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         with Session(bind=engine) as db:
-            user_exist = db.query(Usuarios).where(Usuarios.Email == email).first()
+            user_exist = db.execute(
+                text('SELECT * FROM Usuarios WHERE Email = :email'),
+                {'email': email}).fetchone()
         if user_exist:
+            user_exist = Usuarios(id=user_exist.ID_usuario,nome=user_exist.Nome_usuario, email=user_exist.Email, tel=user_exist.Numero_telefone, data_inscricao=user_exist.Data_inscricao, multa=user_exist.Multa_atual)
             login_user(user_exist)
             return redirect(url_for('index'))
         #f

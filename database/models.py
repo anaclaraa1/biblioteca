@@ -3,17 +3,15 @@ from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
 from datetime import date
 from flask_login import UserMixin
 
-class Base(DeclarativeBase):
-    pass
 
-class Usuarios(UserMixin, Base):
-    __tablename__ = 'Usuarios'
-    id:Mapped[int] = mapped_column("ID_usuario", primary_key=True, autoincrement=True)
-    Nome_usuario:Mapped[str] = mapped_column(String(255),nullable=False)
-    Email:Mapped[str] = mapped_column(String(255), nullable=False)
-    Numero_telefone:Mapped[str] = mapped_column(String(15), nullable=False)
-    Data_inscricao:Mapped[date] = mapped_column(Date(), nullable=False)
-    Multa_atual:Mapped[float] = mapped_column(nullable=False)
+class Usuarios(UserMixin):
+    def __init__(self, id, nome, email, tel, data_inscricao, multa):
+        self.id = id
+        self.nome = nome
+        self.email = email
+        self.tel = tel
+        self.data_inscricao = data_inscricao
+        self.multa = multa
     
     def get_id(self):
         return str(self.id)
