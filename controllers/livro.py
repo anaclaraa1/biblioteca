@@ -51,13 +51,14 @@ def register_livros():
                     }
             )
             db.commit()
-            flash('Livro cadastrado com sucesso!', category='success')
-            return redirect(url_for('livro.livros'))
+        flash('Livro cadastrado com sucesso!', category='success')
+        return redirect(url_for('livro.livros'))
     
     with Session(bind=engine) as db:
-        lista_autores = db.execute(text("SELECT * FROM Autores"))
-        lista_generos = db.execute(text("SELECT * FROM Generos"))
-        lista_editoras = db.execute(text("SELECT * FROM Editoras"))
+        lista_autores = db.execute(text("SELECT * FROM Autores")).fetchall()
+        lista_generos = db.execute(text("SELECT * FROM Generos")).fetchall()
+        lista_editoras = db.execute(text("SELECT * FROM Editoras")).fetchall()
+
     return render_template('livros/register_livros.html', lista_generos=lista_generos, lista_editoras=lista_editoras, lista_autores=lista_autores)
 
 
