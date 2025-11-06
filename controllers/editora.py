@@ -3,6 +3,7 @@ from flask_login import login_required
 from sqlalchemy.orm import Session
 from sqlalchemy import  text
 from database import engine
+from sqlalchemy.exc import IntegrityError
 
 
 editora = Blueprint('editora', __name__, template_folder='../templates')
@@ -70,3 +71,23 @@ def editar_editora(editora_id: int):
         data = conn.execute(text('SELECT * FROM editoras WHERE ID_editora = :editora_id'), {'editora_id': editora_id})
         editora = data.fetchone()
     return render_template('editora/editar_editora.html', editora=editora)
+
+@editora.route('/deletar_editora/<int:editora_id>')
+@login_required
+def deletar_editora(editora_id: int):
+    with engine.begin() as conn:
+        try:
+            conn.execute(
+                text(
+                    '''
+                        delete from editoras where ID_editora = :editora_id
+                    '''
+                ),
+                {'editora_id': editora_id}
+            )
+            conn.commit()
+        except IntegrityError:
+            flash('Não é possível deletar a editora', category='error')
+        else:
+            flash('Editora deletada com sucesso', category='success')
+    return redirect(url_for('editora.editoras'))

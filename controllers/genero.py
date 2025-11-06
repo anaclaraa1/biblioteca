@@ -3,6 +3,7 @@ from flask_login import login_required
 from sqlalchemy.orm import Session
 from sqlalchemy import  text
 from database import engine
+from sqlalchemy.exc import IntegrityError
 
 genero = Blueprint('genero', __name__, template_folder='../templates')
 
@@ -66,3 +67,23 @@ def editar_genero(genero_id: int):
         data = conn.execute(text('SELECT * FROM generos WHERE ID_genero = :genero_id'), {'genero_id': genero_id})
         genero = data.fetchone()
     return render_template('generos/editar_genero.html', genero=genero)
+
+@genero.route('/deletar_genero/<int:genero_id>')
+@login_required
+def deletar_genero(genero_id: int):
+    with engine.begin() as conn:
+        try:
+            conn.execute(
+                text(
+                    '''
+                        delete from generos where ID_genero = :genero_id
+                    '''
+                ),
+                {'genero_id': genero_id}
+            )
+            conn.commit()
+        except IntegrityError:
+            flash('Não é possível deletar o genero', category='error')
+        else:
+            flash('Genero deletado com sucesso', category='success')
+    return redirect(url_for('genero.generos'))
