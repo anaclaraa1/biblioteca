@@ -3,8 +3,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import  text
 from database import engine
 from datetime import date, timedelta
-from controllers.livro import livros, livro
-
+from sqlalchemy.exc import IntegrityError
 emprestimo = Blueprint('emprestimo', __name__, template_folder='../templates')
 
 
@@ -110,10 +109,18 @@ def editar_emprestimo(emprestimo_id: int):
 @emprestimo.route('/deletar_emprestimo/<int:emprestimo_id>', methods=['GET'])
 def deletar_emprestimo(emprestimo_id: int):
     with engine.begin() as conn:
-        conn.execute(
-            text('''DELETE FROM emprestimos WHERE ID_emprestimo = :emprestimo_id'''),
-            {'emprestimo_id': emprestimo_id}
-        )
-        conn.commit()
-
+        try:
+            conn.execute(
+                text(
+                    '''
+                        delete from emprestimos where ID_emprestimo = :emprestimo_id
+                    '''
+                ),
+                {'emprestimo_id': emprestimo_id}
+            )
+            conn.commit()
+        except IntegrityError:
+            flash('Não é possível deletar o emprestimo...', category='error')
+        else:
+            flash('Emprestimo deletado com sucesso!', category='success')
     return redirect(url_for('emprestimo.visualizar'))
