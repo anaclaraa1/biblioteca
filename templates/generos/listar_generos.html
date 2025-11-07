@@ -13,35 +13,37 @@ Gêneros
         <button>Adicionar gênero</button>
     </a>
     {% if generos %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Gênero</th>
-                    <th colspan="2">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for genero in generos %}
-                <tr>
-                    <td>{{ genero.Nome_genero }}</td>
-                    <td>
-                        <a href="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}">
-                            <button>
-                                Editar
-                            </button>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('genero.deletar_genero', genero_id=genero.ID_genero) }}" onclick="return confirm('Você tem certeza que deseja excluir o gênero {{ genero.Nome_genero }}')">
-                            <button>
-                                Excluir
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Gênero</th>
+                        <th colspan="2">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for genero in generos %}
+                    <tr>
+                        <td>{{ genero.Nome_genero }}</td>
+                        <td>
+                            <a href="{{ url_for('genero.editar_genero', genero_id=genero.ID_genero) }}">
+                                <button>
+                                    Editar
+                                </button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('genero.deletar_genero', genero_id=genero.ID_genero) }}" onclick="return confirm('Você tem certeza que deseja excluir o gênero {{ genero.Nome_genero }}')">
+                                <button>
+                                    Excluir
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <h2>Não há generos cadastrados</h2>
     {% endif %}

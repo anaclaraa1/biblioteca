@@ -13,33 +13,35 @@
         <button>Adicionar editora</button>
     </a>
     {% if editoras %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Endereço</th>
-                    <th colspan="2">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for editora in editoras %}
+        <div class="table">
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ editora.Nome_editora }}</td>
-                        <td>{{ editora.Endereco_editora }}</td>
-                        <td>
-                            <a href="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}">
-                                <button>Editar</button>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ url_for('editora.deletar_editora', editora_id=editora.ID_editora) }}" onclick="return confirm('Você tem certeza que deseja excluir a editora {{ editora.Nome_editora }}?')">
-                                <button>Excluir</button>
-                            </a>
-                        </td>
+                        <th>Nome</th>
+                        <th>Endereço</th>
+                        <th colspan="2">Ações</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for editora in editoras %}
+                        <tr>
+                            <td>{{ editora.Nome_editora }}</td>
+                            <td>{{ editora.Endereco_editora }}</td>
+                            <td>
+                                <a href="{{ url_for('editora.editar_editora', editora_id=editora.ID_editora) }}">
+                                    <button>Editar</button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('editora.deletar_editora', editora_id=editora.ID_editora) }}" onclick="return confirm('Você tem certeza que deseja excluir a editora {{ editora.Nome_editora }}?')">
+                                    <button>Excluir</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <h2>Não há editoras cadastradas</h2>
     {% endif %}

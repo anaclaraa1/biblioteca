@@ -31,7 +31,7 @@ def register_generos():
                 db.commit()
                 flash('Gênero cadastrado com sucesso!', category='success')
                 return redirect(url_for('genero.generos'))
-            flash('Este gênero já está cadastrado no sistema.!', category='error')
+            flash('Gênero já cadastrado no sistema.!', category='error')
     return render_template('generos/register_genero.html')
 
 
@@ -60,7 +60,7 @@ def editar_genero(genero_id: int):
                 {**request.form, 'genero_id': genero_id}
             )
             conn.commit()
-        flash('Dados alterados com sucesso', category='success')
+        flash('Dados alterados com sucesso!', category='success')
         return redirect(url_for('genero.generos'))
     
     with engine.begin() as conn:
@@ -83,7 +83,7 @@ def deletar_genero(genero_id: int):
             )
             conn.commit()
         except IntegrityError:
-            flash('Não é possível deletar o genero', category='error')
+            flash('Não é possível deletar o genero...', category='error')
         else:
-            flash('Genero deletado com sucesso', category='success')
+            flash('Gênero deletado com sucesso...', category='success')
     return redirect(url_for('genero.generos'))

@@ -36,7 +36,7 @@ def editar_perfil(user_id: int):
                 {**request.form, 'user_id': user_id}
             )
             conn.commit()
-        flash('Dados alterados com sucesso', category='success')
+        flash('Dados alterados com sucesso!', category='success')
         return redirect(url_for('perfil.visualizar'))
     
     with engine.begin() as conn:

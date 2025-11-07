@@ -38,7 +38,7 @@ def register_autores():
                 db.commit()
                 flash('Autor cadastrado com sucesso!', category='success')
                 return redirect(url_for('autor.autores'))
-            flash('Este autor já está cadastrado no sistema.!', category='error')
+            flash('Autor já está cadastrado no sistema!', category='error')
     return render_template('autores/register_autor.html')
 
 
@@ -70,7 +70,7 @@ def editar_autor(autor_id: int):
                 {**request.form, 'autor_id': autor_id}
             )
             conn.commit()
-        flash('Dados do alterados com sucesso', category='success')
+        flash('Dados do alterados com sucesso!', category='success')
         return redirect(url_for('autor.autores'))
     
     with engine.begin() as conn:
@@ -93,7 +93,7 @@ def deletar_autor(autor_id: int):
             )
             conn.commit()
         except IntegrityError:
-            flash('Não é possível deletar o autor', category='error')
+            flash('Não é possível deletar o autor...', category='error')
         else:
-            flash('Autor deletado com sucesso', category='success')
+            flash('Autor deletado com sucesso!', category='success')
     return redirect(url_for('autor.autores'))

@@ -96,12 +96,41 @@ textarea {
     resize: none;
 }
 
+.table {
+    /* width: 100%; */
+    overflow-x: auto;
+}
+
 table {
     border: 1px solid var(--cor3);
     border-collapse: collapse;
     text-align: center;
     background-color: hsl(from var(--cor1) h s calc(l + 30));
+    width: 100%;
+    min-width: 500px;
 }
+
+.table::-webkit-scrollbar {
+    width: 10px;              
+    height: 10px;
+}
+
+.table::-webkit-scrollbar-track {
+    background: hsl(from var(--cor1) h s calc(l + 40)); 
+    border-radius: 10px;
+}
+
+.table::-webkit-scrollbar-thumb {
+    background-color: var(--cor3);
+    border-radius: 10px;
+    border: 2px solid hsl(from var(--cor1) h s calc(l + 40)); 
+}
+
+.table::-webkit-scrollbar-thumb:hover {
+    background-color: var(--cor2);
+}
+
+
 
 tr, td, th {
     border: 1px solid var(--cor3);
@@ -161,5 +190,67 @@ button {
 
     & > button {
         width: 100%;
+    }
+}
+
+#success, #error {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    padding: 0.5rem;
+    margin: 1rem auto;
+    text-align: center;
+    font-family: var(--font);
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#success {
+    background-color: hsl(from var(--cor1) h s calc(l + 25));
+    border: 1px solid var(--cor3);
+    color: var(--cor3);
+}
+
+#error {
+    background-color: #e6b0aa; 
+    border: 1px solid #943126;
+    color: #4a0c00;
+}
+
+
+@media (max-width: 768px) {
+    header {
+        height: 100%;
+    }
+    nav {
+        flex-direction: column; 
+        align-items: center;
+        gap: 10px;
+    }
+
+    nav h1 {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-wrap: wrap; 
+        justify-content: center;
+        gap: 10px;
+    }
+
+    nav ul a {
+        font-size: 0.95rem;
+    }
+    main {
+        padding: 1em 2em;
+    }
+    .table {
+        width: 100%;
+    }
+
+    form {
+        max-width: 300px;
     }
 }

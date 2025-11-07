@@ -114,7 +114,7 @@ def deletar_livros(livro_id: int):
             )
             conn.commit()
         except IntegrityError:
-            flash('Não é possível deletar o livro', category='error')
+            flash('Não é possível deletar o livro...', category='error')
         else:
-            flash('Livro deletado com sucesso', category='success')
+            flash('Livro deletado com sucesso!', category='success')
     return redirect(url_for('livro.livros'))

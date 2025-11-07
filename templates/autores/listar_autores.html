@@ -13,37 +13,39 @@
         <button>Adicionar autor</button>
     </a>
     {% if autores %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Nacionalidade</th>
-                    <th>Data de Nascimento</th>
-                    <th>Biografia</th>
-                    <th colspan="2">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for autor in autores %}
+        <div class="table">
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ autor.Nome_autor }}</td>
-                        <td>{{ autor.Nacionalidade }}</td>
-                        <td>{{ autor.Data_nascimento }}</td>
-                        <td>{{ autor.Biografia or 'Não há' }}</td>
-                        <td>
-                            <a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">
-                                <button>Editar</button>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ url_for('autor.deletar_autor', autor_id=autor.ID_autor) }}" onclick="return confirm('Você tem certeza que quer apagar o autor {{ autor.Nome_autor }}')">
-                                <button>Excluir</button>
-                            </a>
-                        </td>
+                        <th>Nome</th>
+                        <th>Nacionalidade</th>
+                        <th>Data de Nascimento</th>
+                        <th>Biografia</th>
+                        <th colspan="2">Ações</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for autor in autores %}
+                        <tr>
+                            <td>{{ autor.Nome_autor }}</td>
+                            <td>{{ autor.Nacionalidade }}</td>
+                            <td>{{ autor.Data_nascimento }}</td>
+                            <td>{{ autor.Biografia or 'Não há' }}</td>
+                            <td>
+                                <a href="{{ url_for('autor.editar_autor', autor_id=autor.ID_autor) }}">
+                                    <button>Editar</button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('autor.deletar_autor', autor_id=autor.ID_autor) }}" onclick="return confirm('Você tem certeza que quer apagar o autor {{ autor.Nome_autor }}')">
+                                    <button>Excluir</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <h2>Não há autores cadastrados</h2>
     {% endif %}

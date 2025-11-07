@@ -13,56 +13,58 @@ Livros
         <button>Adicionar livro</button>
     </a>
     {% if livros %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>ISBN</th>
-                    <th>Ano de publicação</th>
-                    <th>Gênero</th>
-                    <th>Editora</th>
-                    <th>Quantidade disponível</th>
-                    <th>Resumo</th>
-                    <th colspan="3">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for livro in livros %}
+        <div class="table">
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ livro.Titulo }}</td>
-                        <td>{{ livro.Nome_autor or 'Não há' }} </td>
-                        <td>{{ livro.ISBN }}</td>
-                        <td>{{ livro.Ano_publicacao }}</td>
-                        <td>{{ livro.Nome_genero or 'Não há' }}</td>
-                        <td>{{ livro.Nome_editora or 'Não há' }}</td>
-                        <td>{{ livro.Quantidade_disponivel }}</td>
-                        <td>{{ livro.Resumo or 'Não há' }}</td>
-                        <td>
-                            <a href="{{ url_for('livro.editar_livro', livro_id=livro.ID_livro) }}">
-                                <button>
-                                    Editar
-                                </button>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}" onclick="return confirm('Você tem certeza que quer apagar o livro {{ livro.Titulo }}')">
-                                <button>
-                                    Excluir
-                                </button>
-                            </a>
-                        </td>
-                        {% if livro.Quantidade_disponivel >= 1 %}
+                        <th>Titulo</th>
+                        <th>Autor</th>
+                        <th>ISBN</th>
+                        <th>Ano de publicação</th>
+                        <th>Gênero</th>
+                        <th>Editora</th>
+                        <th>Quantidade disponível</th>
+                        <th>Resumo</th>
+                        <th colspan="3">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for livro in livros %}
+                        <tr>
+                            <td>{{ livro.Titulo }}</td>
+                            <td>{{ livro.Nome_autor or 'Não há' }} </td>
+                            <td>{{ livro.ISBN }}</td>
+                            <td>{{ livro.Ano_publicacao }}</td>
+                            <td>{{ livro.Nome_genero or 'Não há' }}</td>
+                            <td>{{ livro.Nome_editora or 'Não há' }}</td>
+                            <td>{{ livro.Quantidade_disponivel }}</td>
+                            <td>{{ livro.Resumo or 'Não há' }}</td>
                             <td>
-                                <a href="{{ url_for('emprestimo.register_emprestimo', livro_id=livro.ID_livro)}}">
-                                    <button>Reservar</button>
+                                <a href="{{ url_for('livro.editar_livro', livro_id=livro.ID_livro) }}">
+                                    <button>
+                                        Editar
+                                    </button>
                                 </a>
                             </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                            <td>
+                                <a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}" onclick="return confirm('Você tem certeza que quer apagar o livro {{ livro.Titulo }}')">
+                                    <button>
+                                        Excluir
+                                    </button>
+                                </a>
+                            </td>
+                            {% if livro.Quantidade_disponivel >= 1 %}
+                                <td>
+                                    <a href="{{ url_for('emprestimo.register_emprestimo', livro_id=livro.ID_livro)}}">
+                                        <button>Reservar</button>
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <h2>Não há livros cadastrados</h2>
     {% endif %}
