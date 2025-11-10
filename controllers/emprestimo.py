@@ -23,7 +23,7 @@ def register_emprestimo(livro_id: int):
                         VALUES 
                             (:usuario, :livro, :data_emprestimo, :data_dev_prevista, :status)'''),
                 {'usuario': current_user.id,
-                 'livro':resultado.ID_livro,
+                 'livro':resultado.ID_livro, # type: ignore
                  'data_emprestimo':data_atual,
                  'data_dev_prevista': data_futura,
                  'status': 'pendente'
@@ -31,7 +31,7 @@ def register_emprestimo(livro_id: int):
         )
         conn.execute(
             text('UPDATE livros SET Quantidade_disponivel = :qtd WHERE ID_livro = :id'),
-                {'qtd': resultado.Quantidade_disponivel - 1, 'id': livro_id}
+                {'qtd': resultado.Quantidade_disponivel - 1, 'id': livro_id} # type: ignore
         )
         conn.commit()
         flash('Livro reservado com sucesso!', category='success')
@@ -64,7 +64,7 @@ def devolucao(emprestimo_id: int):
                     Quantidade_disponivel = Quantidade_disponivel + 1 
                     WHERE ID_livro = :livro_id
                  '''),
-            {'livro_id': data.ID_livro}
+            {'livro_id': data.ID_livro} # type: ignore
         )
         
         data_devolucao_real = date.today()
@@ -109,6 +109,18 @@ def editar_emprestimo(emprestimo_id: int):
 @emprestimo.route('/deletar_emprestimo/<int:emprestimo_id>', methods=['GET'])
 def deletar_emprestimo(emprestimo_id: int):
     with engine.begin() as conn:
+        data = conn.execute(
+            text('SELECT * FROM emprestimos WHERE ID_emprestimo = :emprestimo_id'),
+            {'emprestimo_id': emprestimo_id}
+        ).fetchone()
+        
+        if data is None:
+            flash('Empréstimo não encontrado.', category='error')
+            return redirect(url_for('emprestimo.visualizar'))
+        if data[6] != 'devolvido':
+            flash('Só é possível deletar empréstimos que já foram devolvidos.', category='error')
+            return redirect(url_for('emprestimo.visualizar'))
+
         try:
             conn.execute(
                 text(
