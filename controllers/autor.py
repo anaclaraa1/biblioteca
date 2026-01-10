@@ -2,7 +2,7 @@ from flask import render_template, url_for, request,redirect, Blueprint, flash
 from flask_login import login_required
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 from database import engine
 
 
@@ -17,28 +17,34 @@ def register_autores():
         nacionalidade = request.form.get('nacionalidade')
         biografia = request.form.get('biografia')
         nascimento = request.form.get('nascimento')
-        with Session(bind=engine) as db:
-            resultado = db.execute(text("SELECT * FROM Autores WHERE Nome_autor = :nome"), {"nome": nome})
-            resultado = resultado.fetchall()
-            if not resultado: 
-                db.execute(
-                    text("""
-                            INSERT INTO Autores 
-                                (Nome_autor, Nacionalidade, Data_nascimento, Biografia)
-                            VALUES 
-                                (:nome, :nacionalidade, :data_nasc, :biografia)
-                        """),
-                        {
-                            "nome": nome,
-                            "nacionalidade": nacionalidade,
-                            "data_nasc": nascimento,
-                            "biografia": biografia
-                        }
-                )
-                db.commit()
-                flash('Autor cadastrado com sucesso!', category='success')
-                return redirect(url_for('autor.autores'))
-            flash('Autor já está cadastrado no sistema!', category='error')
+        try:
+            with Session(bind=engine) as db:
+                resultado = db.execute(text("SELECT * FROM Autores WHERE Nome_autor = :nome"), {"nome": nome})
+                resultado = resultado.fetchall()
+                if not resultado: 
+                    db.execute(
+                        text("""
+                                INSERT INTO Autores 
+                                    (Nome_autor, Nacionalidade, Data_nascimento, Biografia)
+                                VALUES 
+                                    (:nome, :nacionalidade, :data_nasc, :biografia)
+                            """),
+                            {
+                                "nome": nome,
+                                "nacionalidade": nacionalidade,
+                                "data_nasc": nascimento,
+                                "biografia": biografia
+                            }
+                    )
+                    db.commit()
+                    flash('Autor cadastrado com sucesso!', category='success')
+                    return redirect(url_for('autor.autores'))
+                flash('Autor já está cadastrado no sistema!', category='error')
+        
+        except OperationalError as e:
+            flash(e.orgin.args[1], category='error') # Mensagem de erro do banco de dados
+            return redirect(url_for('autor.register_autores'))
+    
     return render_template('autores/register_autor.html')
 
 

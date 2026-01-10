@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager
 from database import Session, engine
 from database.models import Usuarios
 from sqlalchemy import text

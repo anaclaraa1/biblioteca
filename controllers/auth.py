@@ -1,5 +1,6 @@
 from flask import render_template, url_for, request, redirect, Blueprint, flash
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import OperationalError
 from sqlalchemy import text
 from database import engine
 from flask_login import login_user, login_required, logout_user
@@ -17,36 +18,41 @@ def register():
         email = request.form.get('email')
         telefone = request.form.get('tel')
         data_atual = date.today()
-        with Session(bind=engine) as db:
-            user_exist = db.execute(
-                text('SELECT * FROM Usuarios WHERE Email = :email'),
-                {'email': email}).fetchone()
-            if not user_exist:
-                db.execute(
-                    text("""
-                            INSERT INTO Usuarios
-                                (Nome_usuario, Email, Numero_telefone, Data_inscricao, Multa_atual)
-                            VALUES 
-                                (:nome, :email, :tel, :data_inscricao, :multa)
-                        """),
-                        {
-                            "nome": nome,
-                            "email": email,
-                            "tel": telefone,
-                            "data_inscricao": data_atual,
-                            "multa": 0
-                        }
-                )
-                db.commit()
-                user_atual = db.execute(
-                text('SELECT * FROM Usuarios WHERE Email = :email'),
-                {'email': email}).fetchone()
-                user_novo = Usuarios(id= user_atual.ID_usuario, nome=nome, email=email, tel=telefone, data_inscricao=data_atual, multa=0)
-                login_user(user_novo)
-                return redirect(url_for('index'))
-            
-            flash('Usuário já cadastrado! Realize o login...', category='error')
-            return redirect(url_for('auth_bp.login'))
+        try:
+            with Session(bind=engine) as db:
+                user_exist = db.execute(
+                    text('SELECT * FROM Usuarios WHERE Email = :email'),
+                    {'email': email}).fetchone()
+                if not user_exist:
+                    db.execute(
+                        text("""
+                                INSERT INTO Usuarios
+                                    (Nome_usuario, Email, Numero_telefone, Data_inscricao, Multa_atual)
+                                VALUES 
+                                    (:nome, :email, :tel, :data_inscricao, :multa)
+                            """),
+                            {
+                                "nome": nome,
+                                "email": email,
+                                "tel": telefone,
+                                "data_inscricao": data_atual,
+                                "multa": 0
+                            }
+                    )
+                    db.commit()
+                    user_atual = db.execute(
+                    text('SELECT * FROM Usuarios WHERE Email = :email'),
+                    {'email': email}).fetchone()
+                    user_novo = Usuarios(id= user_atual.ID_usuario, nome=nome, email=email, tel=telefone, data_inscricao=data_atual, multa=0)
+                    login_user(user_novo)
+                    return redirect(url_for('index'))
+                
+                flash('Usuário já cadastrado! Realize o login...', category='error')
+                return redirect(url_for('auth_bp.login'))
+
+        except OperationalError as e:
+            flash(e.orig.args[1], category='error') # Mensagem de erro do banco de dados
+            return redirect(url_for('auth_bp.register'))
 
     return render_template('user/register.html')
 

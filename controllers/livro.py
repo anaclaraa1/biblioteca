@@ -1,7 +1,7 @@
 from flask import render_template, url_for, request,redirect, Blueprint, flash
 from flask_login import login_required
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy import  text
 from database import engine
 
@@ -31,28 +31,33 @@ def register_livros():
         editora = request.form.get('editora')
         qnt_disponivel = request.form.get('qnt_disponivel')
         resumo = request.form.get('resumo')
-        with Session(bind=engine) as db:
-            db.execute(
-                text("""
-                        INSERT INTO Livros 
-                            (Titulo, Autor_id, ISBN, Ano_publicacao, Genero_id, Editora_id, Quantidade_disponivel, Resumo)
-                        VALUES 
-                            (:titulo, :autor_id, :isbn, :ano, :genero_id, :editora_id, :quantidade, :resumo)
-                    """),
-                    {
-                        "titulo": titulo,
-                        "autor_id": autor,
-                        "isbn": isbn,
-                        "ano": ano,
-                        "genero_id": genero,
-                        "editora_id": editora,
-                        "quantidade": qnt_disponivel,
-                        "resumo": resumo
-                    }
-            )
-            db.commit()
-        flash('Livro cadastrado com sucesso!', category='success')
-        return redirect(url_for('livro.livros'))
+        try:
+            with Session(bind=engine) as db:
+                db.execute(
+                    text("""
+                            INSERT INTO Livros 
+                                (Titulo, Autor_id, ISBN, Ano_publicacao, Genero_id, Editora_id, Quantidade_disponivel, Resumo)
+                            VALUES 
+                                (:titulo, :autor_id, :isbn, :ano, :genero_id, :editora_id, :quantidade, :resumo)
+                        """),
+                        {
+                            "titulo": titulo,
+                            "autor_id": autor,
+                            "isbn": isbn,
+                            "ano": ano,
+                            "genero_id": genero,
+                            "editora_id": editora,
+                            "quantidade": qnt_disponivel,
+                            "resumo": resumo
+                        }
+                )
+                db.commit()
+            flash('Livro cadastrado com sucesso!', category='success')
+            return redirect(url_for('livro.livros'))
+        
+        except OperationalError as e:
+            flash(e.orig.args[1], category='error') # Mensagem de erro do banco de dados
+            return redirect(url_for('livro.register_livros'))
     
     with Session(bind=engine) as db:
         lista_autores = db.execute(text("SELECT * FROM Autores")).fetchall()
