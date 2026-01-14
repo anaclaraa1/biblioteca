@@ -60,6 +60,16 @@ CREATE TABLE Emprestimos (
     FOREIGN KEY (Livro_id) REFERENCES Livros(ID_livro)
 );
 
+CREATE TABLE Historico (
+    ID_historico INT AUTO_INCREMENT PRIMARY KEY,
+    Tabela_envolvida VARCHAR(50) NOT NULL,
+    Acao ENUM('INSERT', 'UPDATE', 'DELETE') NOT NULL,
+    Data_hora DATETIME NOT NULL,
+    Envolvido_id INT NOT NULL,
+    Dados_anteriores TEXT,
+    Dados_novos TEXT
+);
+
 -- ==============================================================
 --                           GATILHOS
 -- ==============================================================
@@ -117,3 +127,160 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A data de nascimento não pode ser uma data futura';
     END IF;
 END$
+
+-- ========================= AUDITORIA =========================
+
+-- 1
+CREATE TRIGGER historico_usuario_insert AFTER INSERT
+ON Usuarios
+FOR EACH ROW
+BEGIN
+    INSERT INTO Historico (
+        Tabela_envolvida,
+        Acao,
+        Data_hora,
+        Envolvido_id,
+        Dados_novos
+    )
+    VALUES (
+        'Usuarios',
+        'INSERT',
+        NOW(),
+        NEW.ID_usuario,
+        CONCAT(
+            'Nome: ', NEW.Nome_usuario,
+            ', Email: ', NEW.Email,
+            ', Telefone: ', NEW.Numero_telefone,
+            ', Data inscrição: ', NEW.Data_inscricao,
+            ', Multa: ', NEW.Multa_atual
+        )
+    );
+END$
+
+-- 2
+CREATE TRIGGER historico_livro_insert AFTER INSERT
+ON Livros
+FOR EACH ROW
+BEGIN
+    INSERT INTO Historico (
+        Tabela_envolvida,
+        Acao,
+        Data_hora,
+        Envolvido_id,
+        Dados_novos
+    )
+    VALUES (
+        'Livros',
+        'INSERT',
+        NOW(),
+        NEW.ID_livro,
+        CONCAT(
+            'Título: ', NEW.Titulo,
+            ', Id do Autor: ', NEW.Autor_id,
+            ', ISBN: ', NEW.ISBN,
+            ', Ano de publicação: ', NEW.Ano_publicacao,
+            ', Id do Gênero: ', NEW.Genero_id,
+            ', Id da Editora: ', NEW.Editora_id,
+            ', Quantidade disponivel: ', NEW.Quantidade_disponivel,
+            ', Resumo: ', NEW.Resumo
+        )
+    );
+END$
+
+-- 3
+CREATE TRIGGER historico_livro_delete AFTER DELETE
+ON Livros
+FOR EACH ROW
+BEGIN
+    INSERT INTO Historico (
+        Tabela_envolvida,
+        Acao,
+        Data_hora,
+        Envolvido_id,
+        Dados_novos
+    )
+    VALUES (
+        'Livros',
+        'DELETE',
+        NOW(),
+        OLD.ID_livro,
+        CONCAT(
+            'Título: ', OLD.Titulo,
+            ', Id do Autor: ', OLD.Autor_id,
+            ', ISBN: ', OLD.ISBN,
+            ', Ano de publicação: ', OLD.Ano_publicacao,
+            ', Id do Gênero: ', OLD.Genero_id,
+            ', Id da Editora: ', OLD.Editora_id,
+            ', Quantidade disponivel: ', OLD.Quantidade_disponivel,
+            ', Resumo: ', OLD.Resumo
+        )
+    );
+END$
+
+-- 4
+CREATE TRIGGER historico_usuario_delete AFTER DELETE
+ON Usuarios
+FOR EACH ROW
+BEGIN
+    INSERT INTO Historico (
+        Tabela_envolvida,
+        Acao,
+        Data_hora,
+        Envolvido_id,
+        Dados_anteriores,
+        Dados_novos
+    )
+    VALUES (
+        'Usuarios',
+        'DELETE',
+        NOW(),
+        OLD.ID_emprestimo,
+        CONCAT(
+            'Nome: ', OLD.Nome_usuario,
+            ', Email: ', OLD.Email,
+            ', Telefone: ', OLD.Numero_telefone,
+            ', Data inscrição: ', OLD.Data_inscricao,
+            ', Multa: ', OLD.Multa_atual
+        ),
+
+    );
+END$
+
+--5
+CREATE TRIGGER historico_emprestimo_update AFTER UPDATE
+ON Emprestimos
+FOR EACH ROW
+BEGIN
+    INSERT INTO Historico (
+        Tabela_envolvida,
+        Acao,
+        Data_hora,
+        Envolvido_id,
+        Dados_anteriores,
+        Dados_novos
+    )
+    VALUES (
+        'Emprestimos',
+        'UPDATE',
+        NOW(),
+        NEW.ID_emprestimo,
+        CONCAT(
+            'Id do Usuário: ', OLD.Usuario_id,
+            ', Id do Livro: ', OLD.Livro_id,
+            ', Data do empréstimo: ', OLD.Data_emprestimo,
+            ', Data de devolução prevista: ', OLD.Data_devolucao_prevista,
+            ', Data que foi devolvido: ', OLD.Data_devolucao_real,
+            ', Status do empréstimo: ', OLD.Status_emprestimo 
+        ),
+        CONCAT(
+            'Id do Usuário: ', NEW.Usuario_id,
+            ', Id do Livro: ', NEW.Livro_id,
+            ', Data do empréstimo: ', NEW.Data_emprestimo,
+            ', Data de devolução prevista: ', NEW.Data_devolucao_prevista,
+            ', Data que foi devolvido: ', NEW.Data_devolucao_real,
+            ', Status do empréstimo: ', NEW.Status_emprestimo 
+        )
+    );
+END$
+
+DELIMITER ;
