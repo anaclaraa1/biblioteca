@@ -218,6 +218,7 @@ BEGIN
 END$
 
 -- 4
+-- erro --
 CREATE TRIGGER historico_usuario_delete AFTER DELETE
 ON Usuarios
 FOR EACH ROW
@@ -241,12 +242,11 @@ BEGIN
             ', Telefone: ', OLD.Numero_telefone,
             ', Data inscrição: ', OLD.Data_inscricao,
             ', Multa: ', OLD.Multa_atual
-        ),
-
+        )
     );
 END$
 
---5
+-- 5
 CREATE TRIGGER historico_emprestimo_update AFTER UPDATE
 ON Emprestimos
 FOR EACH ROW
@@ -281,6 +281,55 @@ BEGIN
             ', Status do empréstimo: ', NEW.Status_emprestimo 
         )
     );
+END$
+
+
+-- ========================= ATUALIZAÇÃO =========================
+
+-- 1
+CREATE TRIGGER retirar_estoque_livros AFTER INSERT
+ON Emprestimos
+FOR EACH ROW
+BEGIN 
+    UPDATE Livros SET Quantidade_disponivel = Quantidade_disponivel - 1 WHERE ID_livro = NEW.Livro_id;
+END$
+
+-- 2
+CREATE TRIGGER adicionar_estoque_livros AFTER UPDATE
+ON Emprestimos
+FOR EACH ROW
+BEGIN 
+    -- se o status antigo não era devolvido e agora o novo é devolvido, significa que o livro foi devolvido
+    IF (OLD.Status_emprestimo != 'devolvido' AND NEW.Status_emprestimo = 'devolvido') THEN
+        UPDATE Livros SET Quantidade_disponivel = Quantidade_disponivel + 1 WHERE ID_livro = OLD.Livro_id;
+    END IF;
+END$
+
+-- 3
+CREATE TRIGGER atualizar_estoque_livros AFTER DELETE
+ON Emprestimos
+FOR EACH ROW
+BEGIN 
+    UPDATE Livros SET Quantidade_disponivel = Quantidade_disponivel + 1 WHERE ID_livro = OLD.Livro_id;
+END$
+
+-- 4
+CREATE TRIGGER excluir_emprestimo_automatico BEFORE DELETE
+ON Usuarios
+FOR EACH ROW
+BEGIN
+    DELETE FROM Emprestimos WHERE Usuario_id = OLD.ID_usuario;
+END$
+
+-- 5
+CREATE TRIGGER atualizar_status_emprestimo BEFORE UPDATE
+ON Emprestimos
+FOR EACH ROW
+BEGIN
+    -- se a data de devolver já tiver passado e o campo de data de davolução ainda está como null, significa que o livro está atrasado
+    IF (CURDATE() > NEW.Data_devolucao_prevista AND NEW.Data_devolucao_real IS NULL OR NEW.Data_devolucao_real = '0000-00-00') THEN
+        SET NEW.Status_emprestimo = 'atrasado';
+    END IF;
 END$
 
 DELIMITER ;
