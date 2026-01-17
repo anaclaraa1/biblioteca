@@ -50,14 +50,9 @@ def editar_perfil(user_id: int):
 def deletar_perfil(user_id: int):
     with engine.begin() as conn:
         conn.execute(
-            text('DELETE FROM emprestimos WHERE Usuario_id = :user_id'),
-            {'user_id': user_id}
-        )
-        conn.execute(
             text('DELETE FROM usuarios WHERE ID_usuario = :user_id'),
             {'user_id': user_id}
         )
         conn.commit()
     logout_user()
-    flash('Perfil deletado com sucesso!', category='success')
     return redirect(url_for('index'))

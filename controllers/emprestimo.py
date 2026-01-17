@@ -31,10 +31,7 @@ def register_emprestimo(livro_id: int):
                     'status': 'pendente'
                     }
             )
-            conn.execute(
-                text('UPDATE livros SET Quantidade_disponivel = :qtd WHERE ID_livro = :id'),
-                    {'qtd': resultado.Quantidade_disponivel - 1, 'id': livro_id} # type: ignore
-            )
+
             conn.commit()
             flash('Livro reservado com sucesso!', category='success')
             return redirect(url_for('livro.livros'))
@@ -58,19 +55,6 @@ def visualizar():
 @emprestimo.route('/devolucao/<int:emprestimo_id>', methods=['GET'])
 def devolucao(emprestimo_id: int):
     with engine.begin() as conn:
-        data = conn.execute(
-            text('SELECT * FROM emprestimos JOIN livros ON emprestimos.Livro_id = livros.ID_livro WHERE ID_emprestimo = :emprestimo_id'),
-            {'emprestimo_id': emprestimo_id}
-        ).fetchone()
-
-        conn.execute(
-            text('''
-                    UPDATE livros SET 
-                    Quantidade_disponivel = Quantidade_disponivel + 1 
-                    WHERE ID_livro = :livro_id
-                 '''),
-            {'livro_id': data.ID_livro} # type: ignore
-        )
         
         data_devolucao_real = date.today()
         
