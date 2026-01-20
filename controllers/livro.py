@@ -128,6 +128,9 @@ def deletar_livros(livro_id: int):
 @login_required
 def historico_livros():
     with engine.begin() as conn:
-        livros_delete = conn.execute(text("SELECT * FROM Historico join Livros on Livros.ID_livro=Historico.Envolvido_id where Tabela_envolvida = 'Livros' and Acao = 'DELETE'")).all()
-        return('historico_livros.html', livros_delete=livros_delete)
+        livros_delete = conn.execute(text("SELECT * FROM Historico  where Tabela_envolvida = 'Livros' and Acao = 'DELETE'")).all()
+        dados = livros_delete['Dados_anteriores']
+        
+        return render_template('livros/historico_livros.html', livros_delete=livros_delete)
+        
      

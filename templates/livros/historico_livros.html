@@ -12,7 +12,7 @@ Livros
     <a href="{{ url_for('livro.register_livros') }}">
         <button>Adicionar livro</button>
     </a>
-    {% if livros %}
+    {% if livros_delete %}
         <div class="table">
             <table>
                 <thead>
@@ -25,7 +25,6 @@ Livros
                         <th>Editora</th>
                         <th>Quantidade disponível</th>
                         <th>Resumo</th>
-                        <th colspan="3">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,7 +38,6 @@ Livros
                             <td>{{ livro.Nome_editora or 'Não há' }}</td>
                             <td>{{ livro.Quantidade_disponivel }}</td>
                             <td>{{ livro.Resumo or 'Não há' }}</td>
-                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
