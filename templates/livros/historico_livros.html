@@ -12,9 +12,6 @@ Livros
     <a href="{{ url_for('livro.register_livros') }}">
         <button>Adicionar livro</button>
     </a>
-    <a href="{{ url_for('livro.register_livros') }}">
-        Historico de livros Apagados
-    </a>
     {% if livros %}
         <div class="table">
             <table>
@@ -32,7 +29,7 @@ Livros
                     </tr>
                 </thead>
                 <tbody>
-                    {% for livro in livros %}
+                    {% for livro in livros_delete %}
                         <tr>
                             <td>{{ livro.Titulo }}</td>
                             <td>{{ livro.Nome_autor or 'Não há' }} </td>
@@ -42,26 +39,6 @@ Livros
                             <td>{{ livro.Nome_editora or 'Não há' }}</td>
                             <td>{{ livro.Quantidade_disponivel }}</td>
                             <td>{{ livro.Resumo or 'Não há' }}</td>
-                            <td>
-                                <a href="{{ url_for('livro.editar_livro', livro_id=livro.ID_livro) }}">
-                                    <button>
-                                        Editar
-                                    </button>
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{{ url_for('livro.deletar_livros', livro_id=livro.ID_livro) }}" onclick="return confirm('Você tem certeza que quer apagar o livro {{ livro.Titulo }}')">
-                                    <button>
-                                        Excluir
-                                    </button>
-                                </a>
-                            </td>
-                            {% if livro.Quantidade_disponivel >= 1 %}
-                                <td>
-                                    <a href="{{ url_for('emprestimo.register_emprestimo', livro_id=livro.ID_livro)}}">
-                                        <button>Reservar</button>
-                                    </a>
-                                </td>
                             {% endif %}
                         </tr>
                     {% endfor %}

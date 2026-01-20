@@ -123,3 +123,11 @@ def deletar_livros(livro_id: int):
         else:
             flash('Livro deletado com sucesso!', category='success')
     return redirect(url_for('livro.livros'))
+
+@livro.route('/historico_livros', methods=['GET'])
+@login_required
+def historico_livros():
+    with engine.begin() as conn:
+        livros_delete = conn.execute(text("SELECT * FROM Historico join Livros on Livros.ID_livro=Historico.Envolvido_id where Tabela_envolvida = 'Livros' and Acao = 'DELETE'")).all()
+        return('historico_livros.html', livros_delete=livros_delete)
+     
