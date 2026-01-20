@@ -218,7 +218,6 @@ BEGIN
 END$
 
 -- 4
--- erro --
 CREATE TRIGGER historico_usuario_delete AFTER DELETE
 ON Usuarios
 FOR EACH ROW
@@ -235,7 +234,7 @@ BEGIN
         'Usuarios',
         'DELETE',
         NOW(),
-        OLD.ID_emprestimo,
+        OLD.ID_usuario,
         CONCAT(
             'Nome: ', OLD.Nome_usuario,
             ', Email: ', OLD.Email,
