@@ -83,7 +83,7 @@ CREATE TABLE Historico_Livro (
     Quantidade_disponivel INT,
     Resumo TEXT,
     Data_delete DATETIME NOT NULL,
-    Usuario_id NOT NULL
+    Usuario_id INT NOT NULL
 );
 
 -- ==============================================================
@@ -352,6 +352,53 @@ BEGIN
     -- se a data de devolver já tiver passado e o campo de data de davolução ainda está como null, significa que o livro está atrasado
     IF (CURDATE() > NEW.Data_devolucao_prevista AND NEW.Data_devolucao_real IS NULL OR NEW.Data_devolucao_real = '0000-00-00') THEN
         SET NEW.Status_emprestimo = 'atrasado';
+    END IF;
+END$
+
+
+-- ========================= INSERIR VALORES =========================
+
+-- 1
+CREATE TRIGGER auto_data_inscricao BEFORE INSERT
+ON Usuarios
+FOR EACH ROW
+BEGIN
+    SET NEW.Data_inscricao = CURDATE();
+END$
+
+-- 2
+CREATE TRIGGER auto_data_emprestimo BEFORE INSERT 
+ON Emprestimos
+FOR EACH ROW
+BEGIN
+    SET NEW.Data_emprestimo = CURDATE();
+END$
+
+-- 3
+CREATE TRIGGER auto_data_devolucao_prevista BEFORE INSERT 
+ON Emprestimos
+FOR EACH ROW
+BEGIN
+    SET NEW.Data_devolucao_prevista = DATE_ADD(CURDATE(), INTERVAL 30 DAY);
+END$
+
+-- 4
+CREATE TRIGGER auto_status_emprestimo BEFORE INSERT 
+ON Emprestimos
+FOR EACH ROW
+BEGIN
+    SET NEW.Status_emprestimo = 'pendente';
+
+END$
+
+-- 5
+DELIMITER $
+CREATE TRIGGER auto_data_devolucao_real BEFORE UPDATE 
+ON Emprestimos
+FOR EACH ROW
+BEGIN
+    IF NEW.Status_emprestimo = 'devolvido' AND OLD.Status_emprestimo <> 'devolvido' THEN
+        SET NEW.Data_devolucao_real = CURDATE();
     END IF;
 END$
 

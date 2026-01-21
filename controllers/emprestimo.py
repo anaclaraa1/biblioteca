@@ -17,19 +17,15 @@ def register_emprestimo(livro_id: int):
                     text('SELECT * FROM livros WHERE ID_livro = :livro_id'),
                     {'livro_id': livro_id}
             ).fetchone()
-            data_atual = date.today()
-            data_futura = data_atual + timedelta(days=30)
             conn.execute(
-                    text('''INSERT INTO Emprestimos 
-                                (Usuario_id, Livro_id, Data_emprestimo, Data_devolucao_prevista, Status_emprestimo)
-                            VALUES 
-                                (:usuario, :livro, :data_emprestimo, :data_dev_prevista, :status)'''),
-                    {'usuario': current_user.id,
-                    'livro':resultado.ID_livro, # type: ignore
-                    'data_emprestimo':data_atual,
-                    'data_dev_prevista': data_futura,
-                    'status': 'pendente'
-                    }
+                text('''
+                    INSERT INTO Emprestimos (Usuario_id, Livro_id)
+                    VALUES (:usuario, :livro)
+                '''),
+                {
+                    'usuario': current_user.id,
+                    'livro': resultado.ID_livro  # type: ignore
+                }
             )
 
             conn.commit()
