@@ -9,12 +9,14 @@ Livros
 {% endblock %}
 
 {% block content %}
-    <a href="{{ url_for('livro.register_livros') }}">
-        <button>Adicionar livro</button>
-    </a>
-    <a href="{{ url_for('livro.historico_livros') }}">
-        Historico de livros Apagados
-    </a>
+    <span id="escolha">
+        <a href="{{ url_for('livro.register_livros') }}">
+            <button>Adicionar livro</button>
+        </a>
+        <a href="{{ url_for('livro.historico_livros') }}">
+            <button>Historico de livros Apagados</button>
+        </a>
+    </span>
     {% if livros %}
         <div class="table">
             <table>

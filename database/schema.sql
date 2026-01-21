@@ -70,6 +70,21 @@ CREATE TABLE Historico (
     Dados_novos TEXT
 );
 
+CREATE TABLE Historico_Livro (
+    ID_delete INT AUTO_INCREMENT PRIMARY KEY,
+    Acao ENUM('INSERT','DELETE') NOT NULL,
+    Livro_id INT NOT NULL,
+    Titulo VARCHAR(255),
+    Autor_id INT,
+    ISBN VARCHAR(20),
+    Ano_publicacao INT,
+    Genero_id INT,
+    Editora_id INT,
+    Quantidade_disponivel INT,
+    Resumo TEXT,
+    Data_delete DATETIME NOT NULL
+);
+
 -- ==============================================================
 --                           GATILHOS
 -- ==============================================================
@@ -158,62 +173,68 @@ BEGIN
 END$
 
 -- 2
-CREATE TRIGGER historico_livro_insert AFTER INSERT
-ON Livros
+CREATE TRIGGER historico_livro_insert
+AFTER INSERT ON Livros
 FOR EACH ROW
 BEGIN
-    INSERT INTO Historico (
-        Tabela_envolvida,
+    INSERT INTO Historico_Livro (
         Acao,
-        Data_hora,
-        Envolvido_id,
-        Dados_novos
+        Livro_id,
+        Titulo,
+        Autor_id,
+        ISBN,
+        Ano_publicacao,
+        Genero_id,
+        Editora_id,
+        Quantidade_disponivel,
+        Resumo,
+        Data_delete
     )
     VALUES (
-        'Livros',
         'INSERT',
-        NOW(),
         NEW.ID_livro,
-        CONCAT(
-            'Título: ', NEW.Titulo,
-            ', Id do Autor: ', NEW.Autor_id,
-            ', ISBN: ', NEW.ISBN,
-            ', Ano de publicação: ', NEW.Ano_publicacao,
-            ', Id do Gênero: ', NEW.Genero_id,
-            ', Id da Editora: ', NEW.Editora_id,
-            ', Quantidade disponivel: ', NEW.Quantidade_disponivel,
-            ', Resumo: ', NEW.Resumo
-        )
+        NEW.Titulo,
+        NEW.Autor_id,
+        NEW.ISBN,
+        NEW.Ano_publicacao,
+        NEW.Genero_id,
+        NEW.Editora_id,
+        NEW.Quantidade_disponivel,
+        NEW.Resumo,
+        NOW()
     );
 END$
 
 -- 3
-CREATE TRIGGER historico_livro_delete AFTER DELETE
-ON Livros
+CREATE TRIGGER historico_livro_delete
+AFTER DELETE ON Livros
 FOR EACH ROW
 BEGIN
-    INSERT INTO Historico (
-        Tabela_envolvida,
+    INSERT INTO Historico_Livro (
         Acao,
-        Data_hora,
-        Envolvido_id,
-        Dados_novos
+        Livro_id,
+        Titulo,
+        Autor_id,
+        ISBN,
+        Ano_publicacao,
+        Genero_id,
+        Editora_id,
+        Quantidade_disponivel,
+        Resumo,
+        Data_delete
     )
     VALUES (
-        'Livros',
         'DELETE',
-        NOW(),
         OLD.ID_livro,
-        CONCAT(
-            'Título: ', OLD.Titulo,
-            ', Id do Autor: ', OLD.Autor_id,
-            ', ISBN: ', OLD.ISBN,
-            ', Ano de publicação: ', OLD.Ano_publicacao,
-            ', Id do Gênero: ', OLD.Genero_id,
-            ', Id da Editora: ', OLD.Editora_id,
-            ', Quantidade disponivel: ', OLD.Quantidade_disponivel,
-            ', Resumo: ', OLD.Resumo
-        )
+        OLD.Titulo,
+        OLD.Autor_id,
+        OLD.ISBN,
+        OLD.Ano_publicacao,
+        OLD.Genero_id,
+        OLD.Editora_id,
+        OLD.Quantidade_disponivel,
+        OLD.Resumo,
+        NOW()
     );
 END$
 

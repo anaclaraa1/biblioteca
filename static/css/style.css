@@ -218,6 +218,13 @@ button {
     color: #4a0c00;
 }
 
+#escolha{
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    justify-content: center;
+}
+
 
 @media (max-width: 768px) {
     header {

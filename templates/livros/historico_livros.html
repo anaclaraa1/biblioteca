@@ -9,9 +9,6 @@ Livros
 {% endblock %}
 
 {% block content %}
-    <a href="{{ url_for('livro.register_livros') }}">
-        <button>Adicionar livro</button>
-    </a>
     {% if livros_delete %}
         <div class="table">
             <table>
@@ -23,7 +20,6 @@ Livros
                         <th>Ano de publicação</th>
                         <th>Gênero</th>
                         <th>Editora</th>
-                        <th>Quantidade disponível</th>
                         <th>Resumo</th>
                     </tr>
                 </thead>
@@ -36,7 +32,6 @@ Livros
                             <td>{{ livro.Ano_publicacao }}</td>
                             <td>{{ livro.Nome_genero or 'Não há' }}</td>
                             <td>{{ livro.Nome_editora or 'Não há' }}</td>
-                            <td>{{ livro.Quantidade_disponivel }}</td>
                             <td>{{ livro.Resumo or 'Não há' }}</td>
                         </tr>
                     {% endfor %}
@@ -44,6 +39,6 @@ Livros
             </table>
         </div>
     {% else %}
-        <h2>Não há livros cadastrados</h2>
+        <h2>Não há livros Deletados</h2>
     {% endif %}
 {% endblock %}
