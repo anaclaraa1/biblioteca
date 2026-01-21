@@ -24,5 +24,6 @@ def config_app(app):
             user = db.execute(
                 text('SELECT * FROM Usuarios WHERE ID_usuario = :id'),
                 {'id': user_id}).fetchone()
-            user = Usuarios(id=user.ID_usuario,nome=user.Nome_usuario, email=user.Email, tel=user.Numero_telefone, data_inscricao=user.Data_inscricao, multa=user.Multa_atual)
+            if user:
+                user = Usuarios(id=user.ID_usuario,nome=user.Nome_usuario, email=user.Email, tel=user.Numero_telefone, data_inscricao=user.Data_inscricao, multa=user.Multa_atual)
         return user

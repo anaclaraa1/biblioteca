@@ -1,5 +1,5 @@
 from flask import render_template, url_for, request,redirect, Blueprint, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy import  text
@@ -109,6 +109,9 @@ def editar_livro(livro_id: int):
 def deletar_livros(livro_id: int):
     with engine.begin() as conn:
         try:
+            conn.execute(text("SET @usuario_logado_id = :uid"), {
+                "uid": current_user.id
+            })
             conn.execute(
                 text(
                     '''
@@ -128,7 +131,8 @@ def deletar_livros(livro_id: int):
 @login_required
 def historico_livros():
     with engine.begin() as conn:
-        livros_delete = conn.execute(text("SELECT * FROM Historico_Livro where Acao = 'DELETE'")).all()
+        livros_delete = conn.execute(text("SELECT * FROM Historico_Livro JOIN Autores on Autores.ID_autor = Historico_livro.Autor_id JOIN Editoras on Editoras.ID_editora = Historico_livro.Editora_id JOIN Generos on Generos.ID_genero=Historico_livro.Genero_id JOIN Usuarios on Usuarios.ID_Usuario = Historico_livro.Usuario_id where Acao = 'DELETE'")).all()
+        
         
         return render_template('livros/historico_livros.html', livros_delete=livros_delete)
         

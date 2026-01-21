@@ -82,7 +82,8 @@ CREATE TABLE Historico_Livro (
     Editora_id INT,
     Quantidade_disponivel INT,
     Resumo TEXT,
-    Data_delete DATETIME NOT NULL
+    Data_delete DATETIME NOT NULL,
+    Usuario_id NOT NULL
 );
 
 -- ==============================================================
@@ -221,7 +222,8 @@ BEGIN
         Editora_id,
         Quantidade_disponivel,
         Resumo,
-        Data_delete
+        Data_delete,
+        Usuario_id
     )
     VALUES (
         'DELETE',
@@ -234,7 +236,8 @@ BEGIN
         OLD.Editora_id,
         OLD.Quantidade_disponivel,
         OLD.Resumo,
-        NOW()
+        NOW(),
+        @usuario_logado_id 
     );
 END$
 

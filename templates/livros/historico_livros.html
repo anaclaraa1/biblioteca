@@ -21,6 +21,8 @@ Livros
                         <th>Gênero</th>
                         <th>Editora</th>
                         <th>Resumo</th>
+                        <th>Usuário</th>
+                        <th>Data</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +35,8 @@ Livros
                             <td>{{ livro.Nome_genero or 'Não há' }}</td>
                             <td>{{ livro.Nome_editora or 'Não há' }}</td>
                             <td>{{ livro.Resumo or 'Não há' }}</td>
+                            <td>{{ livro.Nome_usuario }}</td>
+                            <td>{{ livro.Data_delete }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
