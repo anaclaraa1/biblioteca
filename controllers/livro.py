@@ -1,7 +1,7 @@
 from flask import render_template, url_for, request,redirect, Blueprint, flash
 from flask_login import login_required, current_user
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlalchemy.exc import IntegrityError, OperationalError, DatabaseError
 from sqlalchemy import  text
 from database import engine
 
@@ -57,7 +57,7 @@ def register_livros():
             flash('Livro cadastrado com sucesso!', category='success')
             return redirect(url_for('livro.livros'))
         
-        except OperationalError as e:
+        except Exception as e:
             flash(e.orig.args[1], category='error') # Mensagem de erro do banco de dados
             return redirect(url_for('livro.register_livros'))
     

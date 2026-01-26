@@ -2,7 +2,7 @@ from flask import render_template, url_for, request,redirect, Blueprint, flash
 from flask_login import login_required
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlalchemy.exc import IntegrityError, OperationalError, DatabaseError
 from database import engine
 
 
@@ -41,8 +41,8 @@ def register_autores():
                     return redirect(url_for('autor.autores'))
                 flash('Autor já está cadastrado no sistema!', category='error')
         
-        except OperationalError as e:
-            flash(e.orgin.args[1], category='error') # Mensagem de erro do banco de dados
+        except Exception as e:
+            flash(e.orig.args[1], category='error') # Mensagem de erro do banco de dados
             return redirect(url_for('autor.register_autores'))
     
     return render_template('autores/register_autor.html')
