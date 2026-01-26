@@ -8,7 +8,6 @@ from database import engine
 
 livro = Blueprint('livro', __name__, template_folder='../templates')
 
-
 @livro.route('/livros', methods=['GET'])
 @login_required
 def livros():
@@ -23,6 +22,7 @@ def livros():
 @login_required
 def register_livros():
     if request.method == 'POST':
+
         titulo = request.form.get('titulo')
         isbn = request.form.get('ISBN')
         autor = request.form.get('autor')
@@ -33,6 +33,8 @@ def register_livros():
         resumo = request.form.get('resumo')
         try:
             with Session(bind=engine) as db:
+                db.execute(text("SET @usuario_logado_id = :uid"), {
+                        "uid": current_user.id})
                 db.execute(
                     text("""
                             INSERT INTO Livros 
@@ -110,8 +112,7 @@ def deletar_livros(livro_id: int):
     with engine.begin() as conn:
         try:
             conn.execute(text("SET @usuario_logado_id = :uid"), {
-                "uid": current_user.id
-            })
+                "uid": current_user.id})
             conn.execute(
                 text(
                     '''

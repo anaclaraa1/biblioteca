@@ -69,6 +69,9 @@ def devolucao(emprestimo_id: int):
 @emprestimo.route('/editar_emprestimo/<int:emprestimo_id>', methods=['GET', 'POST'])
 def editar_emprestimo(emprestimo_id: int):
     if request.method == 'POST':
+        data_real = request.form['Data_devolucao_real']
+        if not data_real:
+            data_real = None
         with engine.begin() as conn:
             conn.execute(
                 text(
@@ -76,7 +79,11 @@ def editar_emprestimo(emprestimo_id: int):
                         UPDATE emprestimos SET Data_emprestimo = :Data_emprestimo, Data_devolucao_prevista = :Data_devolucao_prevista, Data_devolucao_real = :Data_devolucao_real, Status_emprestimo = :Status_emprestimo WHERE ID_emprestimo = :emprestimo_id
                     '''
                 ),
-                {**request.form, 'emprestimo_id': emprestimo_id}
+                {
+                    **request.form,
+                    'Data_devolucao_real': data_real, 
+                    'emprestimo_id': emprestimo_id
+                }
             )
             conn.commit()
 

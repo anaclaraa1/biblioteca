@@ -82,7 +82,7 @@ CREATE TABLE Historico_Livro (
     Editora_id INT,
     Quantidade_disponivel INT,
     Resumo TEXT,
-    Data_delete DATETIME NOT NULL,
+    Data_hora DATETIME NOT NULL,
     Usuario_id INT NOT NULL
 );
 
@@ -189,7 +189,8 @@ BEGIN
         Editora_id,
         Quantidade_disponivel,
         Resumo,
-        Data_delete
+        Data_hora,
+        Usuario_id
     )
     VALUES (
         'INSERT',
@@ -202,7 +203,8 @@ BEGIN
         NEW.Editora_id,
         NEW.Quantidade_disponivel,
         NEW.Resumo,
-        NOW()
+        NOW(),
+        @usuario_logado_id
     );
 END$
 
@@ -222,7 +224,7 @@ BEGIN
         Editora_id,
         Quantidade_disponivel,
         Resumo,
-        Data_delete,
+        Data_hora,
         Usuario_id
     )
     VALUES (
@@ -251,8 +253,7 @@ BEGIN
         Acao,
         Data_hora,
         Envolvido_id,
-        Dados_anteriores,
-        Dados_novos
+        Dados_anteriores
     )
     VALUES (
         'Usuarios',
@@ -350,7 +351,7 @@ ON Emprestimos
 FOR EACH ROW
 BEGIN
     -- se a data de devolver já tiver passado e o campo de data de davolução ainda está como null, significa que o livro está atrasado
-    IF (CURDATE() > NEW.Data_devolucao_prevista AND NEW.Data_devolucao_real IS NULL OR NEW.Data_devolucao_real = '0000-00-00') THEN
+    IF (CURDATE() > NEW.Data_devolucao_prevista AND NEW.Data_devolucao_real IS NULL) THEN
         SET NEW.Status_emprestimo = 'atrasado';
     END IF;
 END$
