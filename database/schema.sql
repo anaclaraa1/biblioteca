@@ -353,6 +353,7 @@ END$
 
 CREATE FUNCTION atualizar_status (data_prazo DATE, data_entrega DATE) 
 RETURNS VARCHAR(10)
+DETERMINISTIC
 BEGIN
     DECLARE res varchar(10);
     IF (data_entrega IS NOT NULL) THEN
