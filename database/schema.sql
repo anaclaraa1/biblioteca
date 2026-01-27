@@ -87,6 +87,35 @@ CREATE TABLE Historico_Livro (
 );
 
 -- ==============================================================
+--                           FUNCTION
+-- ==============================================================
+
+DELIMITER $
+
+CREATE FUNCTION atualizar_status (
+    data_prazo DATE,
+    data_entrega DATE
+)
+RETURNS VARCHAR(10)
+DETERMINISTIC
+BEGIN
+    DECLARE res VARCHAR(10);
+
+    IF data_entrega IS NOT NULL THEN
+        SET res = 'devolvido';
+    ELSEIF CURDATE() > data_prazo THEN
+        SET res = 'atrasado';
+    ELSE
+        SET res = 'pendente';
+    END IF;
+
+    RETURN res;
+END$
+
+DELIMITER ;
+
+
+-- ==============================================================
 --                           GATILHOS
 -- ==============================================================
 
@@ -178,35 +207,30 @@ CREATE TRIGGER historico_livro_insert
 AFTER INSERT ON Livros
 FOR EACH ROW
 BEGIN
-    INSERT INTO Historico_Livro (
+    INSERT INTO Historico (
+        Tabela_envolvida,
         Acao,
-        Livro_id,
-        Titulo,
-        Autor_id,
-        ISBN,
-        Ano_publicacao,
-        Genero_id,
-        Editora_id,
-        Quantidade_disponivel,
-        Resumo,
-        Data_acao,
-        Usuario_id
+        Data_hora,
+        Envolvido_id,
+        Dados_novos
     )
     VALUES (
+        'Livros',
         'INSERT',
-        NEW.ID_livro,
-        NEW.Titulo,
-        NEW.Autor_id,
-        NEW.ISBN,
-        NEW.Ano_publicacao,
-        NEW.Genero_id,
-        NEW.Editora_id,
-        NEW.Quantidade_disponivel,
-        NEW.Resumo,
         NOW(),
-        @usuario_logado_id
+        NEW.ID_livro,
+        CONCAT(
+            'Título: ', NEW.Titulo,
+            ', Autor_id: ', NEW.Autor_id,
+            ', ISBN: ', NEW.ISBN,
+            ', Ano_publicacao: ', NEW.Ano_publicacao,
+            ', Genero_id: ', NEW.Genero_id,
+            ', Editora_id: ', NEW.Editora_id,
+            ', Quantidade: ', NEW.Quantidade_disponivel
+        )
     );
 END$
+
 
 -- 3
 CREATE TRIGGER historico_livro_delete
@@ -271,8 +295,9 @@ BEGIN
 END$
 
 -- 5
-CREATE TRIGGER historico_emprestimo_update AFTER UPDATE
-ON Emprestimos
+CREATE TRIGGER historico_livro_update
+BEFORE UPDATE
+ON Livros
 FOR EACH ROW
 BEGIN
     INSERT INTO Historico (
@@ -284,25 +309,29 @@ BEGIN
         Dados_novos
     )
     VALUES (
-        'Emprestimos',
+        'Livros',
         'UPDATE',
         NOW(),
-        NEW.ID_emprestimo,
+        NEW.ID_livro,
         CONCAT(
-            'Id do Usuário: ', OLD.Usuario_id,
-            ', Id do Livro: ', OLD.Livro_id,
-            ', Data do empréstimo: ', OLD.Data_emprestimo,
-            ', Data de devolução prevista: ', OLD.Data_devolucao_prevista,
-            ', Data que foi devolvido: ', OLD.Data_devolucao_real,
-            ', Status do empréstimo: ', OLD.Status_emprestimo 
+            'Título: ', OLD.Titulo,
+            ', Autor_id: ', OLD.Autor_id,
+            ', ISBN: ', OLD.ISBN,
+            ', Ano de publicação: ', OLD.Ano_publicacao,
+            ', Gênero_id: ', OLD.Genero_id,
+            ', Editora_id: ', OLD.Editora_id,
+            ', Quantidade disponível: ', OLD.Quantidade_disponivel,
+            ', Resumo: ', OLD.Resumo
         ),
         CONCAT(
-            'Id do Usuário: ', NEW.Usuario_id,
-            ', Id do Livro: ', NEW.Livro_id,
-            ', Data do empréstimo: ', NEW.Data_emprestimo,
-            ', Data de devolução prevista: ', NEW.Data_devolucao_prevista,
-            ', Data que foi devolvido: ', NEW.Data_devolucao_real,
-            ', Status do empréstimo: ', NEW.Status_emprestimo 
+            'Título: ', NEW.Titulo,
+            ', Autor_id: ', NEW.Autor_id,
+            ', ISBN: ', NEW.ISBN,
+            ', Ano de publicação: ', NEW.Ano_publicacao,
+            ', Gênero_id: ', NEW.Genero_id,
+            ', Editora_id: ', NEW.Editora_id,
+            ', Quantidade disponível: ', NEW.Quantidade_disponivel,
+            ', Resumo: ', NEW.Resumo
         )
     );
 END$
@@ -311,7 +340,6 @@ END$
 -- ========================= ATUALIZAÇÃO =========================
 
 -- 1
-DELIMITER $
 CREATE TRIGGER retirar_estoque_insert AFTER INSERT
 ON Emprestimos
 FOR EACH ROW
@@ -350,22 +378,6 @@ BEGIN
 END$
 
 -- 5
-
-CREATE FUNCTION atualizar_status (data_prazo DATE, data_entrega DATE) 
-RETURNS VARCHAR(10)
-BEGIN
-    DECLARE res varchar(10);
-    IF (data_entrega IS NOT NULL) THEN
-        SET res = 'devolvido';
-    ELSEIF (CURDATE() > data_prazo) THEN
-        SET res = 'atrasado';
-    ELSE 
-        SET res = 'pendente';
-    END IF; 
-
-    RETURN res;
-END $
-
 CREATE TRIGGER atualizar_status_emprestimo BEFORE UPDATE
 ON Emprestimos
 FOR EACH ROW
