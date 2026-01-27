@@ -311,7 +311,8 @@ END$
 -- ========================= ATUALIZAÇÃO =========================
 
 -- 1
-CREATE TRIGGER retirar_estoque_livros AFTER INSERT
+DELIMITER $
+CREATE TRIGGER retirar_estoque_insert AFTER INSERT
 ON Emprestimos
 FOR EACH ROW
 BEGIN 
@@ -319,30 +320,33 @@ BEGIN
 END$
 
 -- 2
-CREATE TRIGGER adicionar_estoque_livros AFTER UPDATE
+CREATE TRIGGER adicionar_estoque_update AFTER UPDATE
 ON Emprestimos
 FOR EACH ROW
 BEGIN 
-    -- se o status antigo não era devolvido e agora o novo é devolvido, significa que o livro foi devolvido
-    IF (OLD.Status_emprestimo != 'devolvido' AND NEW.Status_emprestimo = 'devolvido') THEN
+    IF (OLD.Status_emprestimo <> 'devolvido' AND NEW.Status_emprestimo = 'devolvido') THEN
         UPDATE Livros SET Quantidade_disponivel = Quantidade_disponivel + 1 WHERE ID_livro = OLD.Livro_id;
     END IF;
 END$
 
 -- 3
-CREATE TRIGGER atualizar_estoque_livros AFTER DELETE
+CREATE TRIGGER atualizar_estoque_delete AFTER DELETE
 ON Emprestimos
 FOR EACH ROW
 BEGIN 
-    UPDATE Livros SET Quantidade_disponivel = Quantidade_disponivel + 1 WHERE ID_livro = OLD.Livro_id;
+    IF OLD.Status_emprestimo <> 'devolvido' THEN
+        UPDATE Livros SET Quantidade_disponivel = Quantidade_disponivel + 1 WHERE ID_livro = OLD.Livro_id;
+    END IF;
 END$
 
 -- 4
-CREATE TRIGGER excluir_emprestimo_automatico BEFORE DELETE
-ON Usuarios
+CREATE TRIGGER retirar_estoque_update AFTER UPDATE 
+ON Emprestimos 
 FOR EACH ROW
 BEGIN
-    DELETE FROM Emprestimos WHERE Usuario_id = OLD.ID_usuario;
+    IF OLD.Status_emprestimo = 'devolvido' AND NEW.Status_emprestimo <> 'devolvido' THEN
+        UPDATE Livros SET Quantidade_disponivel = Quantidade_disponivel - 1 WHERE ID_livro = NEW.Livro_id;
+    END IF;
 END$
 
 -- 5
@@ -406,7 +410,6 @@ BEGIN
 END$
 
 -- 5
-DELIMITER $
 CREATE TRIGGER auto_data_devolucao_real BEFORE UPDATE 
 ON Emprestimos
 FOR EACH ROW

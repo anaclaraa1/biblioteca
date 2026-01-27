@@ -76,7 +76,7 @@ def editar_emprestimo(emprestimo_id: int):
             conn.execute(
                 text(
                     '''
-                        UPDATE emprestimos SET Data_emprestimo = :Data_emprestimo, Data_devolucao_prevista = :Data_devolucao_prevista, Data_devolucao_real = :Data_devolucao_real, Status_emprestimo = :Status_emprestimo WHERE ID_emprestimo = :emprestimo_id
+                        UPDATE emprestimos SET Data_emprestimo = :Data_emprestimo, Data_devolucao_prevista = :Data_devolucao_prevista, Data_devolucao_real = :Data_devolucao_real WHERE ID_emprestimo = :emprestimo_id
                     '''
                 ),
                 {
