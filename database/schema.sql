@@ -346,14 +346,27 @@ BEGIN
 END$
 
 -- 5
+
+CREATE FUNCTION atualizar_status (data_prazo DATE, data_entrega DATE) 
+RETURNS VARCHAR(10)
+BEGIN
+    DECLARE res varchar(10);
+    IF (data_entrega IS NOT NULL) THEN
+        SET res = 'devolvido';
+    ELSEIF (CURDATE() > data_prazo) THEN
+        SET res = 'atrasado';
+    ELSE 
+        SET res = 'pendente';
+    END IF; 
+
+    RETURN res;
+END $
+
 CREATE TRIGGER atualizar_status_emprestimo BEFORE UPDATE
 ON Emprestimos
 FOR EACH ROW
 BEGIN
-    -- se a data de devolver já tiver passado e o campo de data de davolução ainda está como null, significa que o livro está atrasado
-    IF (CURDATE() > NEW.Data_devolucao_prevista AND NEW.Data_devolucao_real IS NULL) THEN
-        SET NEW.Status_emprestimo = 'atrasado';
-    END IF;
+    SET NEW.Status_emprestimo = atualizar_status(NEW.Data_devolucao_prevista, NEW.Data_devolucao_real);
 END$
 
 
