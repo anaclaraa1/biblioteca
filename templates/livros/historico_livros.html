@@ -5,7 +5,7 @@ Livros
 {% endblock %}
 
 {% block title_page %}
-Livros
+Livros deletados
 {% endblock %}
 
 {% block content %}
@@ -36,7 +36,7 @@ Livros
                             <td>{{ livro.Nome_editora or 'Não há' }}</td>
                             <td>{{ livro.Resumo or 'Não há' }}</td>
                             <td>{{ livro.Nome_usuario }}</td>
-                            <td>{{ livro.Data_delete }}</td>
+                            <td>{{ livro.Data_acao }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

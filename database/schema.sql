@@ -82,7 +82,7 @@ CREATE TABLE Historico_Livro (
     Editora_id INT,
     Quantidade_disponivel INT,
     Resumo TEXT,
-    Data_hora DATETIME NOT NULL,
+    Data_acao DATE NOT NULL,
     Usuario_id INT NOT NULL
 );
 
@@ -115,12 +115,12 @@ BEGIN
 END$
 
 -- 3
-CREATE TRIGGER verificar_data_devolucao BEFORE INSERT
+CREATE TRIGGER verificar_data_devolucao BEFORE UPDATE
 ON Emprestimos
 FOR EACH ROW
 BEGIN
-    IF NEW.Data_devolucao_prevista < NEW.Data_emprestimo THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A data de devolução prevista não pode ser anterior à data de empréstimo';
+    IF NEW.Data_devolucao_real < NEW.Data_emprestimo THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A data de devolução real não pode ser anterior à data de empréstimo';
     END IF;
 END$
 
@@ -189,7 +189,7 @@ BEGIN
         Editora_id,
         Quantidade_disponivel,
         Resumo,
-        Data_hora,
+        Data_acao,
         Usuario_id
     )
     VALUES (
@@ -224,7 +224,7 @@ BEGIN
         Editora_id,
         Quantidade_disponivel,
         Resumo,
-        Data_hora,
+        Data_acao,
         Usuario_id
     )
     VALUES (

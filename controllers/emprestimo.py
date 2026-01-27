@@ -68,27 +68,31 @@ def devolucao(emprestimo_id: int):
     
 @emprestimo.route('/editar_emprestimo/<int:emprestimo_id>', methods=['GET', 'POST'])
 def editar_emprestimo(emprestimo_id: int):
-    if request.method == 'POST':
-        data_real = request.form['Data_devolucao_real']
-        if not data_real:
-            data_real = None
-        with engine.begin() as conn:
-            conn.execute(
-                text(
-                    '''
-                        UPDATE emprestimos SET Data_emprestimo = :Data_emprestimo, Data_devolucao_prevista = :Data_devolucao_prevista, Data_devolucao_real = :Data_devolucao_real WHERE ID_emprestimo = :emprestimo_id
-                    '''
-                ),
-                {
-                    **request.form,
-                    'Data_devolucao_real': data_real, 
-                    'emprestimo_id': emprestimo_id
-                }
-            )
-            conn.commit()
+    try:
+        if request.method == 'POST':
+            data_real = request.form['Data_devolucao_real']
+            if not data_real:
+                data_real = None
+            with engine.begin() as conn:
+                conn.execute(
+                    text(
+                        '''
+                            UPDATE emprestimos SET Data_emprestimo = :Data_emprestimo, Data_devolucao_prevista = :Data_devolucao_prevista, Data_devolucao_real = :Data_devolucao_real WHERE ID_emprestimo = :emprestimo_id
+                        '''
+                    ),
+                    {
+                        **request.form,
+                        'Data_devolucao_real': data_real, 
+                        'emprestimo_id': emprestimo_id
+                    }
+                )
+                conn.commit()
 
-        flash('Dados alterados com sucesso!', category='success')
-        return redirect(url_for('emprestimo.visualizar'))
+            flash('Dados alterados com sucesso!', category='success')
+            return redirect(url_for('emprestimo.visualizar'))
+    except Exception as e:
+        flash(e.orig.args[1], category='error') # Mensagem de erro do banco de dados
+        return redirect(url_for('emprestimo.editar_emprestimo', emprestimo_id=emprestimo_id))
     
     with engine.begin() as conn:
         emprestimo = conn.execute(
