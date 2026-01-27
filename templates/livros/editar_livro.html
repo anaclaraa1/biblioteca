@@ -37,7 +37,7 @@
         <label for="qnt_disponivel">Quantidade disponível:</label>
         <input type="number" id="qnt_disponivel" name="Quantidade_disponivel" placeholder="quantidade" value="{{ livro.Quantidade_disponivel }}" min="0" required>
         <label for="resumo">Resumo:</label>
-        <textarea id="resumo" name="Resumo" placeholder="Escreva algo..." value="{{ livro.Resumo }}" required></textarea>
+        <textarea id="resumo" name="Resumo" placeholder="Escreva algo..." value="{{ livro.Resumo }}" required>{{ livro.Resumo }}</textarea>
         <button>Enviar</button>
     </form>
 {% endblock %}

@@ -17,7 +17,7 @@
         <label for="Data_nascimento">Nascimento:</label>
         <input type="date" id="Data_nascimento" name="Data_nascimento" placeholder="nascimento" value="{{ autor.Data_nascimento }}" required>
         <label for="Biografia">Biografia:</label>
-        <textarea id="Biografia" name="Biografia" placeholder="Escreva algo..." value="{{ autor.Biografia }}" required></textarea>
+        <textarea id="Biografia" name="Biografia" placeholder="Escreva algo..." value="{{ autor.Biografia }}" required>{{ autor.Biografia }}</textarea>
         <button>Enviar</button>
     </form>
 {% endblock %}
